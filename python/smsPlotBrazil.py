@@ -8,7 +8,7 @@ from smsPlotABS import *
 class smsPlotBrazil(smsPlotABS):
 
     def __init__(self, modelname, histo, obsLimits, expLimits, energy, lumi, preliminary, label):
-        self.standardDef(modelname, histo, obsLimits, expLimits, energy, lumi, preliminary)
+        self.standardDef(modelname, histo, obsLimits, expLimits, energy, lumi, preliminary, label)
         # canvas for the plot
         self.c = rt.TCanvas("cBrazil_%s" %label,"cBrazil_%s" %label,600,600)
         self.histo = self.emptyHistogram(histo)
@@ -37,13 +37,13 @@ class smsPlotBrazil(smsPlotABS):
         self.OBS['nominal'].SetLineStyle(1)
         self.OBS['nominal'].SetLineWidth(4)
         # observed + 1sigma
-        self.OBS['plus'].SetLineColor(1)
-        self.OBS['plus'].SetLineWidth(2)
-        self.OBS['plus'].SetLineStyle(1)
+#        self.OBS['plus'].SetLineColor(1)
+#        self.OBS['plus'].SetLineWidth(2)
+#        self.OBS['plus'].SetLineStyle(1)
         # observed - 1sigma
-        self.OBS['minus'].SetLineColor(1)
-        self.OBS['minus'].SetLineWidth(2)
-        self.OBS['minus'].SetLineStyle(1)
+#        self.OBS['minus'].SetLineColor(1)
+#        self.OBS['minus'].SetLineWidth(2)
+#        self.OBS['minus'].SetLineStyle(1)
         # expected
         self.EXP['nominal'].SetLineColor(1)
         self.EXP['nominal'].SetLineWidth(4)
@@ -77,8 +77,8 @@ class smsPlotBrazil(smsPlotABS):
         self.EXP['minus'].SetLineStyle(3)
         # DRAW LINES
         self.OBS['nominal'].Draw("LSAME")
-        self.OBS['plus'].Draw("LSAME")
-        self.OBS['minus'].Draw("LSAME")        
+#        self.OBS['plus'].Draw("LSAME")
+#        self.OBS['minus'].Draw("LSAME")        
         self.EXP['nominal'].Draw("LSAME")
         #self.EXP['plus'].Draw("LSAME")
         #self.EXP['minus'].Draw("LSAME")        

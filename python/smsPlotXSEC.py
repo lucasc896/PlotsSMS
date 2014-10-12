@@ -7,8 +7,7 @@ from smsPlotABS import *
 class smsPlotXSEC(smsPlotABS):
 
     def __init__(self, modelname, histo, obsLimits, expLimits, energy, lumi, preliminary, label):
-        self.standardDef(modelname, histo, obsLimits, expLimits, energy, lumi, preliminary)
-        self.LABEL = label
+        self.standardDef(modelname, histo, obsLimits, expLimits, energy, lumi, preliminary, label)
         # canvas for the plot
         self.c = rt.TCanvas("cCONT_%s" %label,"cCONT_%s" %label,600,600)
         self.histo = histo['histogram']
