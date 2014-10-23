@@ -57,4 +57,4 @@ class inputFile():
                     #'minus': rootFileIn.Get(tmpLINE[4]),
                     'colorLine': tmpLINE[5],
                     'colorArea': tmpLINE[6]}
-
+        return None

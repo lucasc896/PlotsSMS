@@ -28,6 +28,7 @@ class smsPlotABS(object):
         self.emptyhisto = self.emptyHistogramFromModel()
 
     def emptyHistogramFromModel(self):
+        print self.model
         self.emptyHisto = rt.TH2D("emptyHisto", "", 1, self.model.Xmin, self.model.Xmax, 1, self.model.Ymin, self.model.Ymax)
         
     # define the plot canvas
@@ -77,8 +78,8 @@ class smsPlotABS(object):
         graphWhite.SetLineWidth(3)
         graphWhite.SetPoint(0,self.model.Xmin, self.model.Ymax)
         graphWhite.SetPoint(1,self.model.Xmax, self.model.Ymax)
-        graphWhite.SetPoint(2,self.model.Xmax, self.model.Ymax*0.75)
-        graphWhite.SetPoint(3,self.model.Xmin, self.model.Ymax*0.75)
+        graphWhite.SetPoint(2,self.model.Xmax, self.model.Ymax*0.68)
+        graphWhite.SetPoint(3,self.model.Xmin, self.model.Ymax*0.68)
         graphWhite.SetPoint(4,self.model.Xmin, self.model.Ymax)
         graphWhite.Draw("FSAME")
         graphWhite.Draw("LSAME")
@@ -119,30 +120,30 @@ class smsPlotABS(object):
         xRange = self.model.Xmax-self.model.Xmin
         yRange = self.model.Ymax-self.model.Ymin
         
-        LObs = rt.TGraph(2)
-        LObs.SetName("LObs")
-        LObs.SetTitle("LObs")
-        LObs.SetLineColor(color(self.OBS['colorLine']))
-        LObs.SetLineStyle(1)
-        LObs.SetLineWidth(4)
-        LObs.SetMarkerStyle(20)
-        LObs.SetPoint(0,self.model.Xmin+3*xRange/100, self.model.Ymax-1.35*yRange/100*10)
-        LObs.SetPoint(1,self.model.Xmin+10*xRange/100, self.model.Ymax-1.35*yRange/100*10)
-
         LObsP = rt.TGraph(2)
         LObsP.SetName("LObsP")
         LObsP.SetTitle("LObsP")
-        LObsP.SetLineColor(color(self.OBS['colorLine']))
+        if self.OBS is not None : LObsP.SetLineColor(color(self.OBS['colorLine']))
         LObsP.SetLineStyle(1)
         LObsP.SetLineWidth(2)
         LObsP.SetMarkerStyle(20)
         LObsP.SetPoint(0,self.model.Xmin+3*xRange/100, self.model.Ymax-1.20*yRange/100*10)
         LObsP.SetPoint(1,self.model.Xmin+10*xRange/100, self.model.Ymax-1.20*yRange/100*10)
 
+        LObs = rt.TGraph(2)
+        LObs.SetName("LObs")
+        LObs.SetTitle("LObs")
+        if self.OBS is not None : LObs.SetLineColor(color(self.OBS['colorLine']))
+        LObs.SetLineStyle(1)
+        LObs.SetLineWidth(4)
+        LObs.SetMarkerStyle(20)
+        LObs.SetPoint(0,self.model.Xmin+3*xRange/100, self.model.Ymax-1.35*yRange/100*10)
+        LObs.SetPoint(1,self.model.Xmin+10*xRange/100, self.model.Ymax-1.35*yRange/100*10)
+
         LObsM = rt.TGraph(2)
         LObsM.SetName("LObsM")
         LObsM.SetTitle("LObsM")
-        LObsM.SetLineColor(color(self.OBS['colorLine']))
+        if self.OBS is not None : LObsM.SetLineColor(color(self.OBS['colorLine']))
         LObsM.SetLineStyle(1)
         LObsM.SetLineWidth(2)
         LObsM.SetMarkerStyle(20)
@@ -164,15 +165,6 @@ class smsPlotABS(object):
         LExpP.SetPoint(0,self.model.Xmin+3*xRange/100, self.model.Ymax-1.85*yRange/100*10)
         LExpP.SetPoint(1,self.model.Xmin+10*xRange/100, self.model.Ymax-1.85*yRange/100*10)
 
-        LExpP2 = rt.TGraph(2)
-        LExpP2.SetName("LExpP2")
-        LExpP2.SetTitle("LExpP2")
-        LExpP2.SetLineColor(color(self.EXP['colorLine']))
-        LExpP2.SetLineStyle(2)
-        LExpP2.SetLineWidth(2)  
-        LExpP2.SetPoint(0,self.model.Xmin+3*xRange/100, self.model.Ymax-1.85*yRange/100*10)
-        LExpP2.SetPoint(1,self.model.Xmin+10*xRange/100, self.model.Ymax-1.85*yRange/100*10)
-
         LExp = rt.TGraph(2)
         LExp.SetName("LExp")
         LExp.SetTitle("LExp")
@@ -191,38 +183,68 @@ class smsPlotABS(object):
         LExpM.SetPoint(0,self.model.Xmin+3*xRange/100, self.model.Ymax-2.15*yRange/100*10)
         LExpM.SetPoint(1,self.model.Xmin+10*xRange/100, self.model.Ymax-2.15*yRange/100*10)
 
-        LExpM2 = rt.TGraph(2)
-        LExpM2.SetName("LExpM2")
-        LExpM2.SetTitle("LExpM2")
-        LExpM2.SetLineColor(color(self.EXP['colorLine']))
-        LExpM2.SetLineStyle(2)
-        LExpM2.SetLineWidth(2)  
-        LExpM2.SetPoint(0,self.model.Xmin+3*xRange/100, self.model.Ymax-2.15*yRange/100*10)
-        LExpM2.SetPoint(1,self.model.Xmin+10*xRange/100, self.model.Ymax-2.15*yRange/100*10)
-
         textExp = rt.TLatex(self.model.Xmin+11*xRange/100, self.model.Ymax-2.15*yRange/100*10, "Expected #pm 1 #sigma_{experiment}")
         textExp.SetTextFont(42)
         textExp.SetTextSize(0.040)
         textExp.Draw()
         self.c.textExp = textExp
 
+        LExpP2 = rt.TGraph(2)
+        LExpP2.SetName("LExpP2")
+        LExpP2.SetTitle("LExpP2")
+        LExpP2.SetLineColor(color(self.EXP['colorLine']))
+        LExpP2.SetLineStyle(5)
+        LExpP2.SetLineWidth(2)  
+        LExpP2.SetPoint(0,self.model.Xmin+3*xRange/100, self.model.Ymax-2.50*yRange/100*10)
+        LExpP2.SetPoint(1,self.model.Xmin+10*xRange/100, self.model.Ymax-2.50*yRange/100*10)
+
+        LExp2 = rt.TGraph(2)
+        LExp2.SetName("LExp2")
+        LExp2.SetTitle("LExp2")
+        LExp2.SetLineColor(color(self.EXP['colorLine']))
+        LExp2.SetLineStyle(2)
+        LExp2.SetLineWidth(4)
+        LExp2.SetPoint(0,self.model.Xmin+3*xRange/100, self.model.Ymax-2.65*yRange/100*10)
+        LExp2.SetPoint(1,self.model.Xmin+10*xRange/100, self.model.Ymax-2.65*yRange/100*10)
+
+        LExpM2 = rt.TGraph(2)
+        LExpM2.SetName("LExpM2")
+        LExpM2.SetTitle("LExpM2")
+        LExpM2.SetLineColor(color(self.EXP['colorLine']))
+        LExpM2.SetLineStyle(5)
+        LExpM2.SetLineWidth(2)  
+        LExpM2.SetPoint(0,self.model.Xmin+3*xRange/100, self.model.Ymax-2.80*yRange/100*10)
+        LExpM2.SetPoint(1,self.model.Xmin+10*xRange/100, self.model.Ymax-2.80*yRange/100*10)
+
+        textExp2 = rt.TLatex(self.model.Xmin+11*xRange/100, self.model.Ymax-2.80*yRange/100*10, "Expected #pm 2 #sigma_{experiment}")
+        textExp2.SetTextFont(42)
+        textExp2.SetTextSize(0.040)
+        textExp2.Draw()
+        self.c.textExp2 = textExp2
+
+        LObsP.Draw("LSAME")
         LObs.Draw("LSAME")
         LObsM.Draw("LSAME")
-        LObsP.Draw("LSAME")
-        LExp.Draw("LSAME")
+
         LExpM.Draw("LSAME") 
-        LExpM2.Draw("LSAME")
+        LExp.Draw("LSAME")
         LExpP.Draw("LSAME")
+
         LExpP2.Draw("LSAME")
+        LExp2.Draw("LSAME")
+        LExpM2.Draw("LSAME")
         
+        self.c.LObsP = LObsP
         self.c.LObs = LObs
         self.c.LObsM = LObsM
-        self.c.LObsP = LObsP
+
+        self.c.LExpP = LExpP
         self.c.LExp = LExp
         self.c.LExpM = LExpM
-        self.c.LExpM2 = LExpM2
-        self.c.LExpP = LExpP
+
         self.c.LExpP2 = LExpP2
+        self.c.LExp2 = LExp2
+        self.c.LExpM2 = LExpM2
 
     def DrawDiagonal(self):
         diagonal = rt.TGraph(3, self.model.diagX, self.model.diagY)
@@ -236,9 +258,10 @@ class smsPlotABS(object):
         
     def DrawLines(self):
         # observed
-        self.OBS['nominal'].SetLineColor(color(self.OBS['colorLine']))
-        self.OBS['nominal'].SetLineStyle(1)
-        self.OBS['nominal'].SetLineWidth(4)
+        if self.OBS is not None : 
+            self.OBS['nominal'].SetLineColor(color(self.OBS['colorLine']))
+            self.OBS['nominal'].SetLineStyle(1)
+            self.OBS['nominal'].SetLineWidth(4)
         # observed + 1sigma
 #        self.OBS['plus'].SetLineColor(color(self.OBS['colorLine']))
 #        self.OBS['plus'].SetLineStyle(1)
@@ -253,7 +276,7 @@ class smsPlotABS(object):
         self.EXP['plus'].SetLineWidth(2)                
         # expected + 2sigma
         self.EXP['plus2'].SetLineColor(color(self.EXP['colorLine']))
-        self.EXP['plus2'].SetLineStyle(2)
+        self.EXP['plus2'].SetLineStyle(5)
         self.EXP['plus2'].SetLineWidth(2)                
         # expected
         self.EXP['nominal'].SetLineColor(color(self.EXP['colorLine']))
@@ -265,15 +288,15 @@ class smsPlotABS(object):
         self.EXP['minus'].SetLineWidth(2)                        
         # expected - 2sigma
         self.EXP['minus2'].SetLineColor(color(self.EXP['colorLine']))
-        self.EXP['minus2'].SetLineStyle(2)
-        self.EXP['minus2'].SetLineWidth(2)                        
+        self.EXP['minus2'].SetLineStyle(5)
+        self.EXP['minus2'].SetLineWidth(2)
         # DRAW LINES
         self.EXP['nominal'].Draw("LSAME")
         self.EXP['plus'].Draw("LSAME")
         self.EXP['plus2'].Draw("LSAME")
         self.EXP['minus'].Draw("LSAME")
         self.EXP['minus2'].Draw("LSAME")
-        self.OBS['nominal'].Draw("LSAME")
+        if self.OBS is not None : self.OBS['nominal'].Draw("LSAME")
 #        self.OBS['plus'].Draw("LSAME")
 #        self.OBS['minus'].Draw("LSAME")        
 
