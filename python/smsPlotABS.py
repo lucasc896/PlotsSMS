@@ -25,12 +25,17 @@ class smsPlotABS(object):
         self.preliminary = preliminary
         self.label = label
         # create the reference empty histo
+        self.deltaM = True
         self.emptyhisto = self.emptyHistogramFromModel()
 
     def emptyHistogramFromModel(self):
-        print self.model
+        #xmin = self.model.Xmin
+        #xmax = self.model.Xmax
+        #ymin = self.model.Ymin if self.deltaM else self.model.Xmin - self.model.Ymin
+        #ymax = self.model.Ymax if self.deltaM else self.model.Xmax - self.model.Ymin
+        #self.emptyHisto = rt.TH2D("emptyHisto", "", 1, xmin, xmax, 1, ymin, ymax)
         self.emptyHisto = rt.TH2D("emptyHisto", "", 1, self.model.Xmin, self.model.Xmax, 1, self.model.Ymin, self.model.Ymax)
-        
+
     # define the plot canvas
     def setStyle(self):
         # canvas style
@@ -301,3 +306,9 @@ class smsPlotABS(object):
 #        self.OBS['minus'].Draw("LSAME")        
 
         
+#        c1 = rt.TCanvas()
+#        print self.EXP
+#        tmp = self.EXP["nominal"]
+#        rt.SetOwnership(tmp,True)
+#        tmp.Draw("SAME")
+#        raw_input("")

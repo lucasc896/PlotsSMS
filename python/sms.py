@@ -55,8 +55,8 @@ class sms():
         # decay chain
         self.label= "pp #rightarrow #tilde{t} #tilde{t},  #tilde{t} #rightarrow c #tilde{#chi}^{0}_{1}";
         # scan range to plot
-        self.Xmin = 100.-25./2.
-        self.Xmax = 350.+25./2.
+        self.Xmin = 100.-25.#/2.
+        self.Xmax = 350.+25.#/2.
         self.Ymin = 0.
         self.Ymax = 530.
         # produce sparticle
@@ -74,8 +74,8 @@ class sms():
         # decay chain
         self.label= "pp #rightarrow #tilde{t} #tilde{t},  #tilde{t} #rightarrow bf#bar{f}#tilde{#chi}^{0}_{1}";
         # scan range to plot
-        self.Xmin = 100.-25./2.
-        self.Xmax = 350.+25./2.
+        self.Xmin = 100.-25.#/2.
+        self.Xmax = 350.+25.#/2.
         self.Ymin = 0.
         self.Ymax = 530.
         # produce sparticle

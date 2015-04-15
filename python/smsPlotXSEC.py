@@ -2,6 +2,7 @@ import ROOT as rt
 from array import *
 from sms import *
 from smsPlotABS import *
+import numpy as np
 
 # class producing the 2D plot with xsec colors
 class smsPlotXSEC(smsPlotABS):
@@ -35,6 +36,12 @@ class smsPlotXSEC(smsPlotABS):
         
         self.c.cd()
         self.histo.Draw("colz")
+
+#        contours = np.array(10.)
+#        self.histo.SetContours(1,contours)
+#        self.histo.Draw("CONT LIST")
+#        self.c.Update()
+#        raw_input("")
         
         rt.gPad.Update()
         palette = self.histo.GetListOfFunctions().FindObject("palette")

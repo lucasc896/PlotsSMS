@@ -67,9 +67,9 @@ class inputFile():
             if tmpLINE[0] != "HISTOGRAM": continue
             fileIN.close()
             rootFileIn = rt.TFile.Open(tmpLINE[1])
-            return {'histogram': rootFileIn.Get(tmpLINE[2])}
+            #return {'histogram': rootFileIn.Get(tmpLINE[2])}
             #return {'histogram': self.dm(rootFileIn.Get(tmpLINE[2]))}
-            #return {'histogram': self.interpolate(self.dm(rootFileIn.Get(tmpLINE[2])))}
+            return {'histogram': self.interpolate(self.dm(rootFileIn.Get(tmpLINE[2])))}
             
     def findEXPECTED(self, fileName):
         fileIN = open(fileName)        
