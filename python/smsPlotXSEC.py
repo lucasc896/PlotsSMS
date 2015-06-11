@@ -2,13 +2,13 @@ import ROOT as rt
 from array import *
 from sms import *
 from smsPlotABS import *
+import numpy as np
 
 # class producing the 2D plot with xsec colors
 class smsPlotXSEC(smsPlotABS):
 
     def __init__(self, modelname, histo, obsLimits, expLimits, energy, lumi, preliminary, label):
-        self.standardDef(modelname, histo, obsLimits, expLimits, energy, lumi, preliminary)
-        self.LABEL = label
+        self.standardDef(modelname, histo, obsLimits, expLimits, energy, lumi, preliminary, label)
         # canvas for the plot
         self.c = rt.TCanvas("cCONT_%s" %label,"cCONT_%s" %label,600,600)
         self.histo = histo['histogram']
@@ -36,6 +36,12 @@ class smsPlotXSEC(smsPlotABS):
         
         self.c.cd()
         self.histo.Draw("colz")
+
+#        contours = np.array(10.)
+#        self.histo.SetContours(1,contours)
+#        self.histo.Draw("CONT LIST")
+#        self.c.Update()
+#        raw_input("")
         
         rt.gPad.Update()
         palette = self.histo.GetListOfFunctions().FindObject("palette")
@@ -61,6 +67,10 @@ class smsPlotXSEC(smsPlotABS):
         self.emptyHisto.GetYaxis().SetRangeUser(self.model.Ymin, self.model.Ymax)
         self.emptyHisto.Draw()
         self.histo.Draw("COLZSAME")
+        print "MAX:",self.histo.GetMaximum()
+        print "MIN:",self.histo.GetMinimum(1.e-6)
+        self.histo.SetMaximum(200.)
+        self.histo.SetMinimum(1.)
         self.DrawDiagonal()
         self.DrawLines()
         self.DrawText()

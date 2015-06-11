@@ -8,7 +8,7 @@ from smsPlotABS import *
 class smsPlotBrazil(smsPlotABS):
 
     def __init__(self, modelname, histo, obsLimits, expLimits, energy, lumi, preliminary, label):
-        self.standardDef(modelname, histo, obsLimits, expLimits, energy, lumi, preliminary)
+        self.standardDef(modelname, histo, obsLimits, expLimits, energy, lumi, preliminary, label)
         # canvas for the plot
         self.c = rt.TCanvas("cBrazil_%s" %label,"cBrazil_%s" %label,600,600)
         self.histo = self.emptyHistogram(histo)
@@ -32,22 +32,45 @@ class smsPlotBrazil(smsPlotABS):
         self.DrawLegend()
 
     def DrawLines(self):
-        # observed
-        self.OBS['nominal'].SetLineColor(1)
-        self.OBS['nominal'].SetLineStyle(1)
-        self.OBS['nominal'].SetLineWidth(4)
-        # observed + 1sigma
-        self.OBS['plus'].SetLineColor(1)
-        self.OBS['plus'].SetLineWidth(2)
-        self.OBS['plus'].SetLineStyle(1)
-        # observed - 1sigma
-        self.OBS['minus'].SetLineColor(1)
-        self.OBS['minus'].SetLineWidth(2)
-        self.OBS['minus'].SetLineStyle(1)
-        # expected
+        if self.OBS is not None : 
+            # observed
+            self.OBS['nominal'].SetLineColor(1)
+            self.OBS['nominal'].SetLineStyle(1)
+            self.OBS['nominal'].SetLineWidth(4)
+            # observed + 1sigma
+            self.OBS['plus'].SetLineColor(1)
+            self.OBS['plus'].SetLineWidth(2)
+            self.OBS['plus'].SetLineStyle(1)
+            # observed - 1sigma
+            self.OBS['minus'].SetLineColor(1)
+            self.OBS['minus'].SetLineWidth(2)
+            self.OBS['minus'].SetLineStyle(1)
+        # expected 1sigma
         self.EXP['nominal'].SetLineColor(1)
         self.EXP['nominal'].SetLineWidth(4)
         self.EXP['nominal'].SetLineStyle(2)        
+
+        # build one graph summing the + and - 2 sigma
+        nP2 = self.EXP['plus2'].GetN()
+        nM2 = self.EXP['minus2'].GetN()
+        sigmaBandX2 = []
+        sigmaBandY2 = []
+        for i in range(0,nP2):
+            sigmaBandX2.append(rt.Double(0.))
+            sigmaBandY2.append(rt.Double(0.))
+            self.EXP['plus2'].GetPoint(i, sigmaBandX2[i], sigmaBandY2[i])          
+        for i in range(0,nM2):
+            sigmaBandX2.append(rt.Double(0.))
+            sigmaBandY2.append(rt.Double(0.))
+            #self.EXP['minus'].GetPoint(i, sigmaBandX[i+nP], sigmaBandY[i+nP])                      
+        for i in range(0,nM2):            
+            self.EXP['minus2'].GetPoint(i, sigmaBandX2[nP2+nM2-i-1], sigmaBandY2[nP2+nM2-i-1])          
+        sigmaBand2 = rt.TGraph(nP2+nM2, array('d', sigmaBandX2), array('d', sigmaBandY2))
+        #sigmaBand.SetFillStyle(3001)
+        sigmaBand2.SetFillColor(color(self.EXP['colorArea2']))
+        sigmaBand2.Draw("FSAME")
+        self.c.sigmaBand2 = sigmaBand2
+
         # build one graph summing the + and - 1 sigma
         nP = self.EXP['plus'].GetN()
         nM = self.EXP['minus'].GetN()
@@ -76,9 +99,10 @@ class smsPlotBrazil(smsPlotABS):
         self.EXP['minus'].SetLineColor(1)
         self.EXP['minus'].SetLineStyle(3)
         # DRAW LINES
-        self.OBS['nominal'].Draw("LSAME")
-        self.OBS['plus'].Draw("LSAME")
-        self.OBS['minus'].Draw("LSAME")        
+        if self.OBS is not None : 
+            self.OBS['nominal'].Draw("LSAME")
+            self.OBS['plus'].Draw("LSAME")
+            self.OBS['minus'].Draw("LSAME")
         self.EXP['nominal'].Draw("LSAME")
         #self.EXP['plus'].Draw("LSAME")
         #self.EXP['minus'].Draw("LSAME")        
@@ -137,26 +161,55 @@ class smsPlotBrazil(smsPlotABS):
         LExpP.SetTitle("LExpPM")
         LExpP.SetFillColor(color(self.EXP['colorArea']))
         LExpP.SetLineStyle(3)
-        LExpP.SetPoint(0,self.model.Xmin+10,43)
-        LExpP.SetPoint(1,self.model.Xmin+80,43)
-        LExpP.SetPoint(2,self.model.Xmin+80,27)
-        LExpP.SetPoint(3,self.model.Xmin+10,27)
-        
+#        LExpP.SetPoint(0,self.model.Xmin+10,43)
+#        LExpP.SetPoint(1,self.model.Xmin+80,43)
+#        LExpP.SetPoint(2,self.model.Xmin+80,27)
+#        LExpP.SetPoint(3,self.model.Xmin+10,27)
         LExpP.SetPoint(0,self.model.Xmin+3*xRange/100, self.model.Ymax-2.15*yRange/100*10)
         LExpP.SetPoint(1,self.model.Xmin+10*xRange/100, self.model.Ymax-2.15*yRange/100*10)
         LExpP.SetPoint(2,self.model.Xmin+10*xRange/100, self.model.Ymax-1.85*yRange/100*10)
         LExpP.SetPoint(3,self.model.Xmin+3*xRange/100, self.model.Ymax-1.85*yRange/100*10)
 
-        
         textExp = rt.TLatex(self.model.Xmin+11*xRange/100, self.model.Ymax-2.15*yRange/100*10, "Expected #pm 1 #sigma_{experiment}")
         textExp.SetTextFont(42)
         textExp.SetTextSize(0.040)
         textExp.Draw()
         self.c.textExp = textExp
 
+        LExp2 = rt.TGraph(2)
+        LExp2.SetName("LExp2")
+        LExp2.SetTitle("LExp2")
+        LExp2.SetLineColor(1)
+        LExp2.SetLineWidth(4)
+        LExp2.SetLineStyle(2)
+        LExp2.SetPoint(0,self.model.Xmin+3*xRange/100, self.model.Ymax-2.65*yRange/100*10)
+        LExp2.SetPoint(1,self.model.Xmin+10*xRange/100, self.model.Ymax-2.65*yRange/100*10)
+
+        LExpP2 = rt.TGraph(4)
+        LExpP2.SetName("LExpPM2")
+        LExpP2.SetTitle("LExpPM2")
+        LExpP2.SetFillColor(color(self.EXP['colorArea2']))
+        LExpP2.SetLineStyle(3)
+#        LExpP2.SetPoint(0,self.model.Xmin+10,43)
+#        LExpP2.SetPoint(1,self.model.Xmin+80,43)
+#        LExpP2.SetPoint(2,self.model.Xmin+80,27)
+#        LExpP2.SetPoint(3,self.model.Xmin+10,27)
+        LExpP2.SetPoint(0,self.model.Xmin+3*xRange/100, self.model.Ymax-2.80*yRange/100*10)
+        LExpP2.SetPoint(1,self.model.Xmin+10*xRange/100, self.model.Ymax-2.80*yRange/100*10)
+        LExpP2.SetPoint(2,self.model.Xmin+10*xRange/100, self.model.Ymax-2.50*yRange/100*10)
+        LExpP2.SetPoint(3,self.model.Xmin+3*xRange/100, self.model.Ymax-2.50*yRange/100*10)
+        
+        textExp2 = rt.TLatex(self.model.Xmin+11*xRange/100, self.model.Ymax-2.80*yRange/100*10, "Expected #pm 2 #sigma_{experiment}")
+        textExp2.SetTextFont(42)
+        textExp2.SetTextSize(0.040)
+        textExp2.Draw()
+        self.c.textExp2 = textExp2
+
         LObs.Draw("LSAME")
         LObsM.Draw("LSAME")
         LObsP.Draw("LSAME")
+        LExpP2.Draw("FSAME")
+        LExp2.Draw("LSAME")
         LExpP.Draw("FSAME")
         LExp.Draw("LSAME")
         
@@ -164,4 +217,6 @@ class smsPlotBrazil(smsPlotABS):
         self.c.LObsM = LObsM
         self.c.LObsP = LObsP
         self.c.LExp = LExp
+        self.c.LExp2 = LExp2
         self.c.LExpP = LExpP
+        self.c.LExpP2 = LExpP2
