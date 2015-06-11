@@ -262,19 +262,19 @@ class smsPlotABS(object):
         self.c.diagonal = diagonal
         
     def DrawLines(self):
-        # observed
         if self.OBS is not None : 
+            # observed
             self.OBS['nominal'].SetLineColor(color(self.OBS['colorLine']))
             self.OBS['nominal'].SetLineStyle(1)
             self.OBS['nominal'].SetLineWidth(4)
-        # observed + 1sigma
-        self.OBS['plus'].SetLineColor(color(self.OBS['colorLine']))
-        self.OBS['plus'].SetLineStyle(1)
-        self.OBS['plus'].SetLineWidth(2)
-        # observed - 1sigma
-        self.OBS['minus'].SetLineColor(color(self.OBS['colorLine']))
-        self.OBS['minus'].SetLineStyle(1)
-        self.OBS['minus'].SetLineWidth(2)
+            # observed + 1sigma
+            self.OBS['plus'].SetLineColor(color(self.OBS['colorLine']))
+            self.OBS['plus'].SetLineStyle(1)
+            self.OBS['plus'].SetLineWidth(2)
+            # observed - 1sigma
+            self.OBS['minus'].SetLineColor(color(self.OBS['colorLine']))
+            self.OBS['minus'].SetLineStyle(1)
+            self.OBS['minus'].SetLineWidth(2)
         # expected + 1sigma
         self.EXP['plus'].SetLineColor(color(self.EXP['colorLine']))
         self.EXP['plus'].SetLineStyle(2)
@@ -301,9 +301,10 @@ class smsPlotABS(object):
         self.EXP['plus2'].Draw("LSAME")
         self.EXP['minus'].Draw("LSAME")
         self.EXP['minus2'].Draw("LSAME")
-        if self.OBS is not None : self.OBS['nominal'].Draw("LSAME")
-        self.OBS['plus'].Draw("LSAME")
-        self.OBS['minus'].Draw("LSAME")
+        if self.OBS is not None : 
+            self.OBS['nominal'].Draw("LSAME")
+            self.OBS['plus'].Draw("LSAME")
+            self.OBS['minus'].Draw("LSAME")
         
 #        c1 = rt.TCanvas()
 #        print self.EXP

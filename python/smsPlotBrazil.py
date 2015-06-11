@@ -32,18 +32,19 @@ class smsPlotBrazil(smsPlotABS):
         self.DrawLegend()
 
     def DrawLines(self):
-        # observed
-        self.OBS['nominal'].SetLineColor(1)
-        self.OBS['nominal'].SetLineStyle(1)
-        self.OBS['nominal'].SetLineWidth(4)
-        # observed + 1sigma
-        self.OBS['plus'].SetLineColor(1)
-        self.OBS['plus'].SetLineWidth(2)
-        self.OBS['plus'].SetLineStyle(1)
-        # observed - 1sigma
-        self.OBS['minus'].SetLineColor(1)
-        self.OBS['minus'].SetLineWidth(2)
-        self.OBS['minus'].SetLineStyle(1)
+        if self.OBS is not None : 
+            # observed
+            self.OBS['nominal'].SetLineColor(1)
+            self.OBS['nominal'].SetLineStyle(1)
+            self.OBS['nominal'].SetLineWidth(4)
+            # observed + 1sigma
+            self.OBS['plus'].SetLineColor(1)
+            self.OBS['plus'].SetLineWidth(2)
+            self.OBS['plus'].SetLineStyle(1)
+            # observed - 1sigma
+            self.OBS['minus'].SetLineColor(1)
+            self.OBS['minus'].SetLineWidth(2)
+            self.OBS['minus'].SetLineStyle(1)
         # expected 1sigma
         self.EXP['nominal'].SetLineColor(1)
         self.EXP['nominal'].SetLineWidth(4)
@@ -98,9 +99,10 @@ class smsPlotBrazil(smsPlotABS):
         self.EXP['minus'].SetLineColor(1)
         self.EXP['minus'].SetLineStyle(3)
         # DRAW LINES
-        self.OBS['nominal'].Draw("LSAME")
-        self.OBS['plus'].Draw("LSAME")
-        self.OBS['minus'].Draw("LSAME")
+        if self.OBS is not None : 
+            self.OBS['nominal'].Draw("LSAME")
+            self.OBS['plus'].Draw("LSAME")
+            self.OBS['minus'].Draw("LSAME")
         self.EXP['nominal'].Draw("LSAME")
         #self.EXP['plus'].Draw("LSAME")
         #self.EXP['minus'].Draw("LSAME")        

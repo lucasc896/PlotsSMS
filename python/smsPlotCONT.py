@@ -31,9 +31,10 @@ class smsPlotCONT(smsPlotABS):
         self.DrawLegend()
 
     def DrawObsArea(self):
-        trasparentColor = rt.gROOT.GetColor(color(self.OBS['colorArea']))
-        trasparentColor.SetAlpha(0.5)
-        self.OBS['nominal'].SetFillColor(color(self.OBS['colorArea']))
-        self.OBS['nominal'].SetLineStyle(1)
-        # DRAW AREAS
-        self.OBS['nominal'].Draw("FSAME")
+        if self.OBS is not None : 
+            trasparentColor = rt.gROOT.GetColor(color(self.OBS['colorArea']))
+            trasparentColor.SetAlpha(0.5)
+            self.OBS['nominal'].SetFillColor(color(self.OBS['colorArea']))
+            self.OBS['nominal'].SetLineStyle(1)
+            # DRAW AREAS
+            self.OBS['nominal'].Draw("FSAME")
