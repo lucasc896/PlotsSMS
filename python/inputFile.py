@@ -84,7 +84,9 @@ class inputFile():
                     'minus': rootFileIn.Get(tmpLINE[5]),
                     'minus2': rootFileIn.Get(tmpLINE[6]),
                     'colorLine': tmpLINE[7],
-                    'colorArea': tmpLINE[8]}
+                    'colorArea': tmpLINE[8],
+                    'colorArea2': tmpLINE[9],
+                    }
 
     def findOBSERVED(self, fileName):
         fileIN = open(fileName)        
@@ -94,8 +96,8 @@ class inputFile():
             fileIN.close()
             rootFileIn = rt.TFile.Open(tmpLINE[1])
             return {'nominal': rootFileIn.Get(tmpLINE[2]),
-                    #'plus': rootFileIn.Get(tmpLINE[3]),
-                    #'minus': rootFileIn.Get(tmpLINE[4]),
+                    'plus': rootFileIn.Get(tmpLINE[3]),
+                    'minus': rootFileIn.Get(tmpLINE[4]),
                     'colorLine': tmpLINE[5],
                     'colorArea': tmpLINE[6]}
         return None

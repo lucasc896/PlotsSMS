@@ -37,13 +37,13 @@ class smsPlotBrazil(smsPlotABS):
         self.OBS['nominal'].SetLineStyle(1)
         self.OBS['nominal'].SetLineWidth(4)
         # observed + 1sigma
-#        self.OBS['plus'].SetLineColor(1)
-#        self.OBS['plus'].SetLineWidth(2)
-#        self.OBS['plus'].SetLineStyle(1)
+        self.OBS['plus'].SetLineColor(1)
+        self.OBS['plus'].SetLineWidth(2)
+        self.OBS['plus'].SetLineStyle(1)
         # observed - 1sigma
-#        self.OBS['minus'].SetLineColor(1)
-#        self.OBS['minus'].SetLineWidth(2)
-#        self.OBS['minus'].SetLineStyle(1)
+        self.OBS['minus'].SetLineColor(1)
+        self.OBS['minus'].SetLineWidth(2)
+        self.OBS['minus'].SetLineStyle(1)
         # expected 1sigma
         self.EXP['nominal'].SetLineColor(1)
         self.EXP['nominal'].SetLineWidth(4)
@@ -66,7 +66,7 @@ class smsPlotBrazil(smsPlotABS):
             self.EXP['minus2'].GetPoint(i, sigmaBandX2[nP2+nM2-i-1], sigmaBandY2[nP2+nM2-i-1])          
         sigmaBand2 = rt.TGraph(nP2+nM2, array('d', sigmaBandX2), array('d', sigmaBandY2))
         #sigmaBand.SetFillStyle(3001)
-        sigmaBand2.SetFillColor(rt.kYellow)#color(self.EXP['colorArea']))
+        sigmaBand2.SetFillColor(color(self.EXP['colorArea2']))
         sigmaBand2.Draw("FSAME")
         self.c.sigmaBand2 = sigmaBand2
 
@@ -99,8 +99,8 @@ class smsPlotBrazil(smsPlotABS):
         self.EXP['minus'].SetLineStyle(3)
         # DRAW LINES
         self.OBS['nominal'].Draw("LSAME")
-#        self.OBS['plus'].Draw("LSAME")
-#        self.OBS['minus'].Draw("LSAME")        
+        self.OBS['plus'].Draw("LSAME")
+        self.OBS['minus'].Draw("LSAME")
         self.EXP['nominal'].Draw("LSAME")
         #self.EXP['plus'].Draw("LSAME")
         #self.EXP['minus'].Draw("LSAME")        
@@ -174,10 +174,19 @@ class smsPlotBrazil(smsPlotABS):
         textExp.Draw()
         self.c.textExp = textExp
 
+        LExp2 = rt.TGraph(2)
+        LExp2.SetName("LExp2")
+        LExp2.SetTitle("LExp2")
+        LExp2.SetLineColor(1)
+        LExp2.SetLineWidth(4)
+        LExp2.SetLineStyle(2)
+        LExp2.SetPoint(0,self.model.Xmin+3*xRange/100, self.model.Ymax-2.65*yRange/100*10)
+        LExp2.SetPoint(1,self.model.Xmin+10*xRange/100, self.model.Ymax-2.65*yRange/100*10)
+
         LExpP2 = rt.TGraph(4)
         LExpP2.SetName("LExpPM2")
         LExpP2.SetTitle("LExpPM2")
-        LExpP2.SetFillColor(rt.kYellow)
+        LExpP2.SetFillColor(color(self.EXP['colorArea2']))
         LExpP2.SetLineStyle(3)
 #        LExpP2.SetPoint(0,self.model.Xmin+10,43)
 #        LExpP2.SetPoint(1,self.model.Xmin+80,43)
@@ -197,12 +206,15 @@ class smsPlotBrazil(smsPlotABS):
         LObs.Draw("LSAME")
         LObsM.Draw("LSAME")
         LObsP.Draw("LSAME")
-        LExpP.Draw("FSAME")
         LExpP2.Draw("FSAME")
+        LExp2.Draw("LSAME")
+        LExpP.Draw("FSAME")
         LExp.Draw("LSAME")
         
         self.c.LObs = LObs
         self.c.LObsM = LObsM
         self.c.LObsP = LObsP
         self.c.LExp = LExp
+        self.c.LExp2 = LExp2
         self.c.LExpP = LExpP
+        self.c.LExpP2 = LExpP2
