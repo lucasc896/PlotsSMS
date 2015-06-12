@@ -70,7 +70,7 @@ class smsPlotXSEC(smsPlotABS):
         print "MAX:",self.histo.GetMaximum()
         print "MIN:",self.histo.GetMinimum(1.e-6)
         self.histo.SetMaximum(200.)
-        self.histo.SetMinimum(1.)
+        self.histo.SetMinimum(0.001)
         self.DrawDiagonal()
         self.DrawLines()
         self.DrawText()

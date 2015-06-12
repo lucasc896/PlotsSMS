@@ -10,6 +10,7 @@ class sms():
         elif modelname.find("T1bbbb") != -1: self.T1bbbb()
         elif modelname.find("T2cc") != -1: self.T2cc()
         elif modelname.find("T2degen") != -1: self.T2degen()
+        elif modelname.find("T2tt") != -1: self.T2tt()
         else : print "unknown model!",modelname
 
     def T1tttt(self):
@@ -84,5 +85,24 @@ class sms():
         self.LSP = "m_{LSP} (GeV)"        
         # diagonal position: mLSP = mgluino - 2mtop 
         mW = 0.#80
+        self.diagX = array('d',[0,20000])
+        self.diagY = array('d',[-mW, 20000-mW])
+
+    def T2tt(self):
+        # model name
+        self.modelname = "T2tt"
+        # decay chain
+        self.label= "pp #rightarrow #tilde{t} #tilde{t},  #tilde{t} #rightarrow t #tilde{#chi}^{0}_{1}";
+        # scan range to plot
+        self.Xmin = 150.#/2.
+        self.Xmax = 800#/2.
+        self.Ymin = 0.
+        self.Ymax = 600.
+        # produce sparticle
+        self.sParticle = "m_{ #tilde{t}} (GeV)"
+        # LSP
+        self.LSP = "m_{LSP} (GeV)"        
+        # diagonal position: mLSP = mgluino - 2mtop 
+        mW = 80.
         self.diagX = array('d',[0,20000])
         self.diagY = array('d',[-mW, 20000-mW])

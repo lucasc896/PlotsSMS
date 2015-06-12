@@ -29,6 +29,7 @@ class smsPlotABS(object):
         self.emptyhisto = self.emptyHistogramFromModel()
 
     def emptyHistogramFromModel(self):
+        print self.model
         #xmin = self.model.Xmin
         #xmax = self.model.Xmax
         #ymin = self.model.Ymin if self.deltaM else self.model.Xmin - self.model.Ymin

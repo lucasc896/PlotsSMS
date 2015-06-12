@@ -15,5 +15,6 @@ python python/makeSMSplots.py config/SUS14006/chris/T2cc/T2cc_SUS14006.cfg T2cc_
 python python/makeSMSplots.py config/SUS14006/chris/T2_4body/T2degen_SUS14006.cfg T2degen_chris_asymp_
 
 # Latest limits (these should be used for paper)
+python python/makeSMSplots.py config/SUS14006/latest/T2tt/T2tt_SUS14006.cfg T2tt_latest_
 python python/makeSMSplots.py config/SUS14006/latest/T2cc/T2cc_SUS14006.cfg T2cc_latest_
 python python/makeSMSplots.py config/SUS14006/latest/T2_4body/T2degen_SUS14006.cfg T2degen_latest_
