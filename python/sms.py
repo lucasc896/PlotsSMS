@@ -10,6 +10,9 @@ class sms():
         elif modelname.find("T1bbbb") != -1: self.T1bbbb()
         elif modelname.find("T2cc") != -1: self.T2cc()
         elif modelname.find("T2degen") != -1: self.T2degen()
+        elif modelname.find("T2tt") != -1: self.T2tt()
+        elif modelname.find("T2bw_0p75") != -1: self.T2bw_0p75()
+        elif modelname.find("T2bw_0p25") != -1: self.T2bw_0p25()
         else : print "unknown model!",modelname
 
     def T1tttt(self):
@@ -60,7 +63,7 @@ class sms():
         self.Ymin = 0.
         self.Ymax = 530.
         # produce sparticle
-        self.sParticle = "m_{ #tilde{t}} (GeV)"
+        self.sparticle = "m_{ #tilde{t}} (GeV)"
         # LSP
         self.LSP = "m_{LSP} (GeV)"        
         # diagonal position: mLSP = mgluino - 2mtop 
@@ -78,6 +81,65 @@ class sms():
         self.Xmax = 350.+25.#/2.
         self.Ymin = 0.
         self.Ymax = 530.
+        # produce sparticle
+        self.sParticle = "m_{ #tilde{t}} (GeV)"
+        # LSP
+        self.LSP = "m_{LSP} (GeV)"        
+        # diagonal position: mLSP = mgluino - 2mtop 
+        mW = 0.#80
+        self.diagX = array('d',[0,20000])
+        self.diagY = array('d',[-mW, 20000-mW])
+
+    def T2tt(self):
+        # model name
+        self.modelname = "T2tt"
+        # decay chain
+        self.label= "pp #rightarrow #tilde{t} #tilde{t},  #tilde{t} #rightarrow t #tilde{#chi}^{0}_{1}";
+        # scan range to plot
+        self.Xmin = 100.-25.#/2.
+        self.Xmax = 712.5+25.#/2.
+        self.Ymin = 0.
+        self.Ymax = 450.
+        # self.Ymax = 300.
+        # produce sparticle
+        self.sParticle = "m_{ #tilde{t}} (GeV)"
+        # LSP
+        self.LSP = "m_{LSP} (GeV)"        
+        # diagonal position: mLSP = mgluino - 2mtop 
+        mW = 0.#80
+        self.diagX = array('d',[0,20000])
+        self.diagY = array('d',[-mW, 20000-mW])
+
+    def T2bw_0p75(self):
+        # model name
+        self.modelname = "T2bw_0p75"
+        # decay chain
+        self.label= "pp #rightarrow #tilde{t} #tilde{t},  #tilde{t} #rightarrow bW #tilde{#chi}^{0}_{1}";
+        # scan range to plot
+        self.Xmin = 100.-25.#/2.
+        self.Xmax = 800.+25.#/2.
+        self.Ymin = 0.
+        self.Ymax = 800.
+        # produce sparticle
+        self.sParticle = "m_{ #tilde{t}} (GeV)"
+        # LSP
+        self.LSP = "m_{LSP} (GeV)"        
+        # diagonal position: mLSP = mgluino - 2mtop 
+        mW = 0.#80
+        self.diagX = array('d',[0,20000])
+        self.diagY = array('d',[-mW, 20000-mW])
+        
+
+    def T2bw_0p25(self):
+        # model name
+        self.modelname = "T2bw_0p25"
+        # decay chain
+        self.label= "pp #rightarrow #tilde{t} #tilde{t},  #tilde{t} #rightarrow bW #tilde{#chi}^{0}_{1}";
+        # scan range to plot
+        self.Xmin = 100.-25.#/2.
+        self.Xmax = 800.+25.#/2.
+        self.Ymin = 0.
+        self.Ymax = 800.
         # produce sparticle
         self.sParticle = "m_{ #tilde{t}} (GeV)"
         # LSP
