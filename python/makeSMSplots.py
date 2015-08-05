@@ -11,6 +11,9 @@ if __name__ == '__main__':
     analysisLabel = sys.argv[1].split("/")[-1].split("_")[1]
     outputname = sys.argv[2]
 
+    if modelname == "T2bw":
+        modelname += "_%s" % sys.argv[1].split("/")[-1].split("_")[1]
+
     # read the config file
     fileIN = inputFile(filename)
     
