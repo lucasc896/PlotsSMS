@@ -4,14 +4,34 @@ from copy import deepcopy
 def to_add(model = "", limit = ""):
     add = {
         "T2tt": {
-            "UpperLimit": [(525.,0.),(225.,50.)][:1],
-            "UpperLimit_m1_Sigma": [],
-            "UpperLimit_p1_Sigma": [(550.,75.),(550.,0.)],
+            "UpperLimit": [(525.,0.),(150.,15.), (275.,50.)],
+            "UpperLimit_m1_Sigma": [(275.,15.)],
+            "UpperLimit_p1_Sigma": [(550.,75.),(550.,0.),(200.,50.)],
             "ExpectedUpperLimit": [(225.,0.),(175.,0.),(647.,0.)][-1:],
             "ExpectedUpperLimit_m1_Sigma": [(675.,0.)],
             "ExpectedUpperLimit_m2_Sigma": [(688.,0.),],
             "ExpectedUpperLimit_p1_Sigma": [(600.,0.)],
             "ExpectedUpperLimit_p2_Sigma": [(565.,0.)],
+            },
+        "T2bw_0p25": {
+            "UpperLimit": [],
+            "UpperLimit_m1_Sigma": [],
+            "UpperLimit_p1_Sigma": [],
+            "ExpectedUpperLimit": [(375.,275.)],
+            "ExpectedUpperLimit_m1_Sigma": [(440.,250.),(360.,50.),(380.,280.)],
+            "ExpectedUpperLimit_m2_Sigma": [(475.,250.),(400.,0.),(400.,300.)],
+            "ExpectedUpperLimit_p1_Sigma": [(300.,200.),(300.,50.)],
+            "ExpectedUpperLimit_p2_Sigma": [(250.,150.)],
+            },
+        "T2bw_0p75": {
+            "UpperLimit": [(445.,0.),(400.,100.),(225.,125.)],
+            "UpperLimit_m1_Sigma": [(420.,0.),(410.,60.),(380.,0.)],
+            "UpperLimit_p1_Sigma": [(460.,70.),(300.,125.)],
+            "ExpectedUpperLimit": [(600.,0.),(225.,125.), (250.,125.)],
+            "ExpectedUpperLimit_m1_Sigma": [(660.,0.),(640.,150.)],
+            "ExpectedUpperLimit_m2_Sigma": [(680.,0.)],
+            "ExpectedUpperLimit_p1_Sigma": [(540.,0.)],
+            "ExpectedUpperLimit_p2_Sigma": [(450.,0.)],
             },
     }
     try:
@@ -24,12 +44,33 @@ def to_remove(model = "", limit = ""):
         "T2tt": {
             "ExpectedUpperLimit": [(200.,100.),(200.,75.),(200.,50.),(625.,0.),(650.,25.),(600.,150.)],
             "ExpectedUpperLimit_m1_Sigma": [(625.,175.),(625.,225.),(675.,175.),(680.,110.),(200.,20.)],
-            "ExpectedUpperLimit_m2_Sigma": [],
+            "ExpectedUpperLimit_m2_Sigma": [(590.,240.),(580.,250.)],
             "ExpectedUpperLimit_p1_Sigma": [(550.,125.)],
             "ExpectedUpperLimit_p2_Sigma": [],
             "UpperLimit": [(200.,50.),(175.,75.),(150.,50.),(225.,25.),(220.,60.),],
-            "UpperLimit_m1_Sigma": [(200.,50.),(500.,25.),],
-            "UpperLimit_p1_Sigma": [(240.,25.),(525.,50.),(525.,75.),],
+            "UpperLimit_m1_Sigma": [(200.,50.),(500.,25.),(220.,20.)],
+            # "UpperLimit_p1_Sigma": [(240.,25.),(525.,50.),(525.,75.),(400,100.)],
+            "UpperLimit_p1_Sigma": [(225.,75.),(175.,75.)]
+            },
+        "T2bw_0p25": {
+            "UpperLimit": [(510.,300.)],
+            "UpperLimit_m1_Sigma": [(510.,300.),(375.,200.)],
+            "UpperLimit_p1_Sigma": [(510.,300.), (300.,280.)],
+            "ExpectedUpperLimit": [(510.,300.),(375.,220.),(350.,75.),(420.,320.)],
+            "ExpectedUpperLimit_m1_Sigma": [(510.,300.),(440.,270.),(420.,150.),(410.,310.)],
+            "ExpectedUpperLimit_m2_Sigma": [(510.,310.),(470.,220.),(460.,230.),(420.,40.),(380.,0.),(475.,300.),(410.,310.)],
+            "ExpectedUpperLimit_p1_Sigma": [(510.,300.),(400.,300.),(330.,210.),(330.,180.),(275.,0.)],
+            "ExpectedUpperLimit_p2_Sigma": [(375.,275.),(310.,190.),(300.,125.)],
+            },
+        "T2bw_0p75": {
+            "UpperLimit": [(440.,280.),(380.,280.),(450.,100.),(400.,0.),(420.,20.),(375.,80.)],
+            "UpperLimit_m1_Sigma": [(440.,280.),(380.,280.),(310.,110.),(330.,110.),(380.,0.),(390.,40.)],
+            "UpperLimit_p1_Sigma": [(440.,280.),(380.,280.),(500.,20.),(450.,50.),(450.,80.),(390.,90.),(310.,120.)],
+            "ExpectedUpperLimit": [(550.,120.),(500.,150),(400.,225.),(250.,150.),(380.,160.),(420.,140.)],
+            "ExpectedUpperLimit_m1_Sigma": [(660.,40.),(620.,0.),(540.,220.),(625.,125.),(660.,110.),(600.,200.),(650.,175.),(250.,160.),(425.,250.),(425.,200.),(450.,160.)],
+            "ExpectedUpperLimit_m2_Sigma": [(680.,210.),(625.,200.),(625.,240.),(670.,100.),(310.,160.),(450.,250.),(440.,260.),(450.,200.)],
+            "ExpectedUpperLimit_p1_Sigma": [(530.,0.),(520.,50.),(375.,125.),(260.,160.)],
+            "ExpectedUpperLimit_p2_Sigma": [(400.,0.),(425.,20.),(450.,100.)],
             },
     }
     try:
@@ -91,9 +132,10 @@ def order_points(points = []):
 
 
 def do_exact_science(model = ""):
-    # fpath = "/Users/chrislucas/SUSY/SignalScans/effStudies/SignalSystematics/PlotsSMS/config/SUS14006/latest_chris/%s/%s_obs.root" % (model, model)
-    fpath = "/Users/chrislucas/SUSY/SignalScans/effStudies/SignalSystematics/PlotsSMS/T2tt_test.root"
+    fpath = "/Users/chrislucas/SUSY/SignalScans/effStudies/SignalSystematics/PlotsSMS/config/SUS14006/latest_chris/%s/%s_obs.root" % (model, model)
+    # fpath = "/Users/chrislucas/SUSY/SignalScans/effStudies/SignalSystematics/PlotsSMS/%s_test.root" % model
 
+    print fpath
     f = r.TFile.Open(fpath, 'UPDATE')
 
     curves = {}
@@ -110,7 +152,6 @@ def do_exact_science(model = ""):
         data[c] = extract_data(curves[c])
 
     for c in data:
-        print c
         # hack to pick only one curve at a time
         # if c != "ExpectedUpperLimit": continue
 
@@ -128,8 +169,12 @@ def do_exact_science(model = ""):
             new_vals.append(new_point)
 
         new_vals = order_points(new_vals)
-        if c == "UpperLimit":
-            print new_vals
+
+        if c == "UpperLimit" and model == "T2tt":
+            new_vals = [(519.0, 19.0), (514.0, 39.0), (499.0, 49.0), (499.0, 74.0), (496.0, 96.0), (474.0, 99.0), (464.0, 114.0), (441.0, 116.0), (424.0, 124.0), (399.0, 124.0), (368.0, 118.0), (250.0, 15.0), (150.0, 15.0), (150.0, 0.0), (200.0, 0.0), (250.0, 0.0), (275.0, 0.0), (300.0, 0.0), (325.0, 0.0), (350.0, 0.0), (375.0, 0.0), (400.0, 0.0), (425.0, 0.0), (450.0, 0.0), (475.0, 0.0), (500.0, 0.0), (525.0, 0.0), (519.0, 19.0)]
+
+        if c == "UpperLimit_m1_Sigma" and model == "T2tt":
+            new_vals = [(475.0, 0.0), (474.0, 24.0), (474.0, 49.0), (474.0, 74.0), (463.0, 88.0), (449.0, 99.0), (424.0, 99.0), (399.0, 99.0), (388.0, 113.0), (349.0, 99.0), (275., 15.), (150.0, 0.0), (200.0, 0.0), (250.0, 0.0), (275.0, 0.0), (300.0, 0.0), (325.0, 0.0), (350.0, 0.0), (375.0, 0.0), (400.0, 0.0), (425.0, 0.0), (450.0, 0.0), (475.0, 0.0), (475.0, 0.0)]
 
         for ipoint, point in enumerate(new_vals):
             new_graph.SetPoint(ipoint, *point)
