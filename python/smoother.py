@@ -195,6 +195,80 @@ def rebin(hist = None, firstInterpolationDirection = ""):
  
   return histRebinnedInterpolated
 
+# def th2Smooth(hist = None):
+#   if "TH2" not in type(hist):
+#     print ">>> Warning: th2Smooth needs a TH2 root object. Returning..."
+#     return
+#   # Double_t k5a[5][5] =  { { 0, 0, 1, 0, 0 },
+#   #                          { 0, 2, 2, 2, 0 },
+#   #                          { 1, 2, 5, 2, 1 },
+#   #                          { 0, 2, 2, 2, 0 },
+#   #                          { 0, 0, 1, 0, 0 } };
+#   #  Double_t k5b[5][5] =  { { 0, 1, 2, 1, 0 },
+#   #                          { 1, 2, 4, 2, 1 },
+#   #                          { 2, 4, 8, 4, 2 },
+#   #                          { 1, 2, 4, 2, 1 },
+#   #                          { 0, 1, 2, 1, 0 } };
+#   k3a =  [ [ 0, 1, 0 ],
+#            [ 1, 2, 1 ],
+#            [ 0, 1, 0 ] ];
+
+
+#   kernel = k3a
+#   ksize_x=3
+#   ksize_y=3
+
+
+#   ifirst = hist.GetXaxis().GetFirst()
+#   ilast  = hist.GetXaxis().GetLast()
+#   jfirst = hist.GetYaxis().GetFirst()
+#   jlast  = hist.GetYaxis().GetLast()
+
+#   nentries = hist.GetEntries()
+#   nx = hist.GetNbinsX()
+#   ny = hist.GetNbinsY()
+#   bufSize  = (nx+2)*(ny+2)
+#   buf  = {};
+#    # if (fSumw2.fN) ebuf = new Double_t[bufSize];
+
+#   for i in range(1, nx+1):
+#     for j in range(1, ny+1):
+#       bin = hist.GetBin(i,j)
+#       buf[bin] = hist.RetrieveBinContent(bin)
+#          # if (ebuf) ebuf[bin]=GetBinError(bin);
+
+#    # // Kernel tail sizes (kernel sizes must be odd for this to work!)
+#   x_push = float((ksize_x-1)/2.)
+#   y_push = float((ksize_y-1)/2.)
+
+#   for i in range(1, nx+1):
+#     for j in range(1, ny+1):
+#       content = 0.0
+#       error = 0.0
+#       norm = 0.0
+#       for n in range(ksize_x):
+#         for m in range(ksize_y):
+#           xb = i+(n-x_push)
+#           yb = j+(m-y_push)
+#           if ( (xb >= 1) and (xb <= nx) and (yb >= 1) and (yb <= ny) ):
+#             bin = GetBin(xb,yb)
+#             k = kernel[n*ksize_x][m]
+#             if ( k != 0.0 ) {
+#               norm    += k;
+#               content += k*buf[bin];
+#                      # if (ebuf) error   += k*k*ebuf[bin]*ebuf[bin];
+
+#       if ( norm != 0.0 ):
+#         hist.SetBinContent(i,j,content/norm)
+#             # if (ebuf) {
+#             #    error /= (norm*norm);
+#             #    SetBinError(i,j,sqrt(error));
+#             # }
+#    fEntries = nentries;
+
+#    # delete [] buf;
+#    # delete [] ebuf;
+
 if __name__ == "__main__":
   print ">>> Debugging smoother.py..."
   print ">   No syntax issues found."
