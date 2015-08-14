@@ -8,6 +8,8 @@ def sqProc(q="", daughter=""):
     if not daughter:
         daughter = q
     chi = "#tilde{#chi}^{0}_{1}"
+    if daughter == 'b':
+        chi = "#tilde{#chi}^{#pm}_{1}"
     out = "pp #rightarrow #tilde{%s} #tilde{%s}" % (q, q)
     out += ", #tilde{%s} #rightarrow %s %s" % (q, daughter, chi)
     # out += "; m(#tilde{g})>>m(#tilde{%s})" % q
@@ -15,8 +17,8 @@ def sqProc(q="", daughter=""):
 
 def process_stamp(model = ""):
     return {"T2tt": sqProc("t"),
-            "T2bw_0p25": sqProc("t", "bW")+" (x=0.25)",
-            "T2bw_0p75": sqProc("t", "bW")+" (x=0.75)",
+            "T2bw_0p25": sqProc("t", "b")+" (x=0.25)",
+            "T2bw_0p75": sqProc("t", "b")+" (x=0.75)",
             "T2cc": sqProc("t", "c"),
             "T2_4body": sqProc("t", "bf#bar{f'}")}[model]
 
@@ -56,7 +58,7 @@ def empty():
     hist = r.TH2D("emptyHisto", "", 1, 100., 800., 1, 0., 450. )
     hist.GetXaxis().SetTitle("m_{#tilde{t}} (GeV)")
     hist.SetTitleOffset(1.3, "x")
-    hist.GetYaxis().SetTitle("m_{#tilde{#chi}^{0}_{1}} (GeV)")
+    hist.GetYaxis().SetTitle("m_{LSP} (GeV)")
     hist.SetTitleOffset(1.3, "y")
 
     return hist
@@ -91,8 +93,8 @@ def get_legend():
     LObsP.SetLineColor(r.kBlack)
     LObsP.SetLineStyle(1)
     LObsP.SetLineWidth(3)
-    LObsP.SetPoint(0, 365., 400.)
-    LObsP.SetPoint(1,415., 400.)
+    LObsP.SetPoint(0, 355., 400.)
+    LObsP.SetPoint(1,405., 400.)
 
     outg.append(LObsP)
 
@@ -102,24 +104,24 @@ def get_legend():
     LExpP.SetLineColor(r.kBlack)
     LExpP.SetLineStyle(2)
     LExpP.SetLineWidth(3)
-    LExpP.SetPoint(0, 365., 360.)
-    LExpP.SetPoint(1,415., 360.)
+    LExpP.SetPoint(0, 355., 360.)
+    LExpP.SetPoint(1,405., 360.)
 
     outg.append(LExpP)
 
-    textObs = r.TLatex(425., 392., "Observed")
+    textObs = r.TLatex(415., 392., "Observed")
     textObs.SetTextFont(42)
-    textObs.SetTextSize(0.030)
+    textObs.SetTextSize(0.025)
 
     outt.append(textObs)
 
-    textExp = r.TLatex(425., 356., "Expected")
+    textExp = r.TLatex(415., 356., "Expected")
     textExp.SetTextFont(42)
-    textExp.SetTextSize(0.030)
+    textExp.SetTextSize(0.025)
 
     outt.append(textExp) 
 
-    modx = 520.
+    modx = 510.
     mody = 420.
 
     for model in models():
@@ -136,31 +138,36 @@ def get_legend():
 
         textT2tt = r.TLatex(modx+60., mody-6., process_stamp(model))
         textT2tt.SetTextFont(42)
-        textT2tt.SetTextSize(0.030)
+        textT2tt.SetTextSize(0.025)
         outt.append(textT2tt)
 
         mody -= 40.
 
     tex1 = r.TLatex(135., 410., "CMS Preliminary")
     tex1.SetTextFont(42)
-    tex1.SetTextSize(0.040)
+    tex1.SetTextSize(0.03)
     outt.append(tex1)
 
-    tex2 = r.TLatex(135., 375., "#sqrt{s} = 8 TeV")
+    tex2 = r.TLatex(135., 375., "#sqrt{s } = 8 TeV")
     tex2.SetTextFont(42)
-    tex2.SetTextSize(0.040)
+    tex2.SetTextSize(0.03)
     outt.append(tex2)
 
-    tex3 = r.TLatex(135., 340., "#alpha_{T} Parked")
+    texL = r.TLatex(135., 340., "#int L dt = 18.493 fb^{-1}")
+    texL.SetTextFont(42)
+    texL.SetTextSize(0.03)
+    outt.append(texL)
+
+    tex3 = r.TLatex(135., 305., "#alpha_{T} Parked")
     tex3.SetTextFont(42)
-    tex3.SetTextSize(0.040)
+    tex3.SetTextSize(0.03)
     outt.append(tex3)
 
     return {"graphs":outg, "text":outt}
 
 def get_text():
 
-    text1 = r.TLatex(150., 510., "CMS Preliminary, #sqrt{s} = 8TeV, #alpha_{T} Parked")
+    text1 = r.TLatex(150., 510., "CMS Preliminary, #sqrt{s} = 8TeV,  #alpha_{T} Parked")
     text1.SetTextFont(42)
     text1.SetTextSize(0.04)
 
@@ -177,7 +184,7 @@ def main():
     for mod in mods:
         model_contours[mod] = get_model_contours(mod, ["ExpectedUpperLimit", "UpperLimit"])
 
-    canv = r.TCanvas()
+    canv = r.TCanvas("canv", "canv", 600, 600)
     # lg = r.TLegend(0.6, 0.6, 0.89, 0.89)
     emptyHisto = empty()
     emptyHisto.Draw("")
