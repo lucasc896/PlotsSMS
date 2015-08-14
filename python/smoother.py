@@ -1,5 +1,7 @@
 import ROOT as r
 
+r.gROOT.SetBatch(0)
+
 # find absolute boundaries of the scan
 # in most inefficient way possible (inefficient => simpler => hopefully fewer typos)
 def getHistMaxMinBins(h = None):
