@@ -6,10 +6,10 @@ def to_add(model = "", limit = ""):
         "T2tt": {
             "UpperLimit": [(525.,0.),(150.,15.), (275.,50.)],
             "UpperLimit_m1_Sigma": [(275.,15.)],
-            "UpperLimit_p1_Sigma": [(550.,75.),(550.,0.),(200.,50.)],
+            "UpperLimit_p1_Sigma": [(550.,75.),(550.,0.),(200.,15.)],
             "ExpectedUpperLimit": [(225.,0.),(175.,0.),(647.,0.)][-1:],
-            "ExpectedUpperLimit_m1_Sigma": [(675.,0.)],
-            "ExpectedUpperLimit_m2_Sigma": [(688.,0.),],
+            "ExpectedUpperLimit_m1_Sigma": [(675.,0.),(200.,75.)],
+            "ExpectedUpperLimit_m2_Sigma": [(688.,0.),(200.,75.)],
             "ExpectedUpperLimit_p1_Sigma": [(600.,0.)],
             "ExpectedUpperLimit_p2_Sigma": [(565.,0.)],
             },
@@ -43,14 +43,14 @@ def to_remove(model = "", limit = ""):
     remove = {
         "T2tt": {
             "ExpectedUpperLimit": [(200.,100.),(200.,75.),(200.,50.),(625.,0.),(650.,25.),(600.,150.)],
-            "ExpectedUpperLimit_m1_Sigma": [(625.,175.),(625.,225.),(675.,175.),(680.,110.),(200.,20.)],
-            "ExpectedUpperLimit_m2_Sigma": [(590.,240.),(580.,250.)],
+            "ExpectedUpperLimit_m1_Sigma": [(625.,175.),(625.,225.),(675.,175.),(680.,110.),(200.,20.),(220.,125.)],
+            "ExpectedUpperLimit_m2_Sigma": [(590.,240.),(580.,250.),(275.,125.),(250.,75.)],
             "ExpectedUpperLimit_p1_Sigma": [(550.,125.)],
             "ExpectedUpperLimit_p2_Sigma": [],
             "UpperLimit": [(200.,50.),(175.,75.),(150.,50.),(225.,25.),(220.,60.),],
             "UpperLimit_m1_Sigma": [(200.,50.),(500.,25.),(220.,20.)],
             # "UpperLimit_p1_Sigma": [(240.,25.),(525.,50.),(525.,75.),(400,100.)],
-            "UpperLimit_p1_Sigma": [(225.,75.),(175.,75.)]
+            "UpperLimit_p1_Sigma": [(225.,75.),(175.,75.),(200.,50.),(235.,35.)]
             },
         "T2bw_0p25": {
             "UpperLimit": [(510.,300.)],
@@ -80,6 +80,7 @@ def to_remove(model = "", limit = ""):
 
 def drop_point(point = (), model = "", limit = ""):
     for rem in to_remove(model, limit):
+        if model == "T2tt" and point[0] < 200.: return True #hack to remove all points below 200 GeV strip
         if abs(point[0] - rem[0]) > 12.: continue
         if abs(point[1] - rem[1]) > 12.: continue
         return True
@@ -131,21 +132,54 @@ def order_points(points = []):
     return out
 
 
+#---------------------------------------------------------------------#
+
+def trim_maps(maps = {}):
+    out = {}
+
+    for m in maps:
+        newmap = maps[m].Clone()
+        newmap.SetName(newmap.GetName() + "_trimmed")
+        for xbin in range(1, maps[m].GetNbinsX()+1):
+            if maps[m].GetXaxis().GetBinCenter(xbin) < 200.:
+                for ybin in range(1, maps[m].GetNbinsY()+1):
+                    val = newmap.GetBinContent(xbin, ybin)
+                    if val > 0.:
+                        newmap.SetBinContent(xbin, ybin, 0.) # set to zero if below 200 GeV and has a value
+            if maps[m].GetXaxis().GetBinCenter(xbin) > 200.: break
+        out[m] = newmap
+    return out
+
+#---------------------------------------------------------------------#
+
 def do_exact_science(model = ""):
-    fpath = "/Users/chrislucas/SUSY/SignalScans/effStudies/SignalSystematics/PlotsSMS/config/SUS14006/latest_chris/%s/%s_obs.root" % (model, model)
+    fpath = "/Users/chrislucas/SUSY/Parked/Signal/PlotsSMS/config/SUS14006/latest_chris/%s/%s_obs.root" % (model, model)
     # fpath = "/Users/chrislucas/SUSY/SignalScans/effStudies/SignalSystematics/PlotsSMS/%s_test.root" % model
 
-    print fpath
     f = r.TFile.Open(fpath, 'UPDATE')
 
     curves = {}
+    maps = {}
     data = {}
 
     for k in f.GetListOfKeys():
         name = k.GetName()
-        if model in name: continue
         if "_new" in name: continue
+        if model in name:
+            maps[name] = k.ReadObj()
+            continue
         curves[name] = k.ReadObj()
+
+    if [False, True][0]:
+        print "WARNING: Trimming T2tt maps!"
+        if raw_input("Continue? (y/n)") != "y": exit()
+        if model != "T2tt": exit("Wrong model for trimming")
+        new_maps = trim_maps(maps)
+        for m in new_maps:
+            new_maps[m].Write()
+        f.Close()
+        exit()
+
 
     # get values
     for c in curves:
@@ -171,10 +205,12 @@ def do_exact_science(model = ""):
         new_vals = order_points(new_vals)
 
         if c == "UpperLimit" and model == "T2tt":
-            new_vals = [(519.0, 19.0), (514.0, 39.0), (499.0, 49.0), (499.0, 74.0), (496.0, 96.0), (474.0, 99.0), (464.0, 114.0), (441.0, 116.0), (424.0, 124.0), (399.0, 124.0), (368.0, 118.0), (250.0, 15.0), (150.0, 15.0), (150.0, 0.0), (200.0, 0.0), (250.0, 0.0), (275.0, 0.0), (300.0, 0.0), (325.0, 0.0), (350.0, 0.0), (375.0, 0.0), (400.0, 0.0), (425.0, 0.0), (450.0, 0.0), (475.0, 0.0), (500.0, 0.0), (525.0, 0.0), (519.0, 19.0)]
+            # new_vals = [(519.0, 19.0), (514.0, 39.0), (499.0, 49.0), (499.0, 74.0), (496.0, 96.0), (474.0, 99.0), (464.0, 114.0), (441.0, 116.0), (424.0, 124.0), (399.0, 124.0), (368.0, 118.0), (250.0, 15.0), (150.0, 15.0), (150.0, 0.0), (200.0, 0.0), (250.0, 0.0), (275.0, 0.0), (300.0, 0.0), (325.0, 0.0), (350.0, 0.0), (375.0, 0.0), (400.0, 0.0), (425.0, 0.0), (450.0, 0.0), (475.0, 0.0), (500.0, 0.0), (525.0, 0.0), (519.0, 19.0)]
+            new_vals = [(519.0, 19.0), (514.0, 39.0), (499.0, 49.0), (499.0, 74.0), (496.0, 96.0), (474.0, 99.0), (464.0, 114.0), (441.0, 116.0), (424.0, 124.0), (399.0, 124.0), (368.0, 118.0), (250.0, 15.0), (200.0, 0.0), (250.0, 0.0), (275.0, 0.0), (300.0, 0.0), (325.0, 0.0), (350.0, 0.0), (375.0, 0.0), (400.0, 0.0), (425.0, 0.0), (450.0, 0.0), (475.0, 0.0), (500.0, 0.0), (525.0, 0.0), (519.0, 19.0)]
 
         if c == "UpperLimit_m1_Sigma" and model == "T2tt":
-            new_vals = [(475.0, 0.0), (474.0, 24.0), (474.0, 49.0), (474.0, 74.0), (463.0, 88.0), (449.0, 99.0), (424.0, 99.0), (399.0, 99.0), (388.0, 113.0), (349.0, 99.0), (275., 15.), (150.0, 0.0), (200.0, 0.0), (250.0, 0.0), (275.0, 0.0), (300.0, 0.0), (325.0, 0.0), (350.0, 0.0), (375.0, 0.0), (400.0, 0.0), (425.0, 0.0), (450.0, 0.0), (475.0, 0.0), (475.0, 0.0)]
+            # new_vals = [(475.0, 0.0), (474.0, 24.0), (474.0, 49.0), (474.0, 74.0), (463.0, 88.0), (449.0, 99.0), (424.0, 99.0), (399.0, 99.0), (388.0, 113.0), (349.0, 99.0), (275., 15.), (150.0, 0.0), (200.0, 0.0), (250.0, 0.0), (275.0, 0.0), (300.0, 0.0), (325.0, 0.0), (350.0, 0.0), (375.0, 0.0), (400.0, 0.0), (425.0, 0.0), (450.0, 0.0), (475.0, 0.0), (475.0, 0.0)]
+            new_vals = [(475.0, 0.0), (474.0, 24.0), (474.0, 49.0), (474.0, 74.0), (463.0, 88.0), (449.0, 99.0), (424.0, 99.0), (399.0, 99.0), (388.0, 113.0), (349.0, 99.0), (275., 15.), (200.0, 0.0), (250.0, 0.0), (275.0, 0.0), (300.0, 0.0), (325.0, 0.0), (350.0, 0.0), (375.0, 0.0), (400.0, 0.0), (425.0, 0.0), (450.0, 0.0), (475.0, 0.0), (475.0, 0.0)]
 
         for ipoint, point in enumerate(new_vals):
             new_graph.SetPoint(ipoint, *point)
