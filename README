@@ -1,4 +1,8 @@
-To run the code
+*Dependencies/Requirements
+Code has been tested using Python 2.7.10 and ROOT 6.04/00
+
+
+*To run the code
 
 1) prepare your python environment to use ROOT
 You can just do cmsenv from a CMSSW directory or
