@@ -7,8 +7,8 @@ import numpy as np
 # class producing the 2D plot with xsec colors
 class smsPlotXSEC(smsPlotABS):
 
-    def __init__(self, modelname, histo, obsLimits, expLimits, energy, lumi, preliminary, label):
-        self.standardDef(modelname, histo, obsLimits, expLimits, energy, lumi, preliminary, label)
+    def __init__(self, modelname, histo, obsLimits, obsLimitsTwo, expLimits, energy, lumi, preliminary, label):
+        self.standardDef(modelname, histo, obsLimits, obsLimitsTwo, expLimits, energy, lumi, preliminary, label)
         # canvas for the plot
         self.c = rt.TCanvas("cCONT_%s" %label,"cCONT_%s" %label,600,600)
         self.histo = histo['histogram']
