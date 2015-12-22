@@ -15,12 +15,12 @@
 # python python/makeSMSplots.py config/SUS14006/chris/T2_4body/T2degen_SUS14006.cfg T2degen_chris_asymp_
 
 # # Latest limits (these should be used for paper)
-# python python/makeSMSplots.py config/SUS14006/latest/T2cc/T2cc_SUS14006.cfg T2cc_latest_
-# python python/makeSMSplots.py config/SUS14006/latest/T2_4body/T2degen_SUS14006.cfg T2degen_latest_
+python python/makeSMSplots.py config/SUS14006/latest/T2cc/T2cc_SUS14006.cfg T2cc_latest_
+python python/makeSMSplots.py config/SUS14006/latest/T2_4body/T2degen_SUS14006.cfg T2degen_latest_
 
-python python/makeSMSplots.py config/SUS14006/latest_chris/T2tt/T2tt_SUS14006.cfg T2tt_latest_
-# python python/makeSMSplots.py config/SUS14006/latest_chris/T2_4body/T2degen_SUS14006.cfg T2degen_latest_
+python python/makeSMSplots.py config/SUS14006/latest_chris_contours/T2tt/T2tt_SUS14006.cfg T2tt_latest_
 
-# python python/makeSMSplots.py config/SUS14006/latest_chris/T2bw_0p75/T2bw_0p75_SUS14006.cfg T2bw0p75_latest_
+python python/makeSMSplots.py config/SUS14006/latest_chris_contours/T2bw_0p75/T2bw_0p75_SUS14006.cfg T2bw0p75_latest_
 
-# python python/makeSMSplots.py config/SUS14006/latest_chris/T2bw_0p25/T2bw_0p25_SUS14006.cfg T2bw0p25_latest_
+
+python python/makeSMSplots.py config/SUS14006/latest_chris_contours/T2bw_0p25/T2bw_0p25_SUS14006.cfg T2bw0p25_latest_
