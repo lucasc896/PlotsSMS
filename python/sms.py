@@ -63,7 +63,7 @@ class sms():
         self.Ymin = 0.
         self.Ymax = 530.
         # produce sparticle
-        self.sparticle = "m_{ #tilde{t}} (GeV)"
+        self.sParticle = "m_{ #tilde{t}} (GeV)"
         # LSP
         self.LSP = "m_{LSP} (GeV)"        
         # diagonal position: mLSP = mgluino - 2mtop 
@@ -96,7 +96,8 @@ class sms():
         # decay chain
         self.label= "pp #rightarrow #tilde{t} #tilde{t},  #tilde{t} #rightarrow t #tilde{#chi}^{0}_{1}";
         # scan range to plot
-        self.Xmin = 100.-25.#/2.
+        # self.Xmin = 100.-25.#/2.
+        self.Xmin = 200.
         self.Xmax = 712.5+25.#/2.
         self.Ymin = 0.
         self.Ymax = 450.
@@ -114,12 +115,14 @@ class sms():
         # model name
         self.modelname = "T2bw_0p75"
         # decay chain
-        self.label= "pp #rightarrow #tilde{t} #tilde{t},  #tilde{t} #rightarrow bW #tilde{#chi}^{0}_{1}";
+        self.label= "pp #rightarrow #tilde{t} #tilde{t},  #tilde{t} #rightarrow b #tilde{#chi}^{#pm}_{1}";
         # scan range to plot
-        self.Xmin = 100.-25.#/2.
-        self.Xmax = 800.+25.#/2.
+        # self.Xmin = 100.-25.#/2.
+        # self.Xmax = 800.+25.#/2.
+        self.Xmin = 100.
+        self.Xmax = 750.
         self.Ymin = 0.
-        self.Ymax = 800.
+        self.Ymax = 450.
         # produce sparticle
         self.sParticle = "m_{ #tilde{t}} (GeV)"
         # LSP
@@ -128,18 +131,22 @@ class sms():
         mW = 0.#80
         self.diagX = array('d',[0,20000])
         self.diagY = array('d',[-mW, 20000-mW])
+        self.xsplitval = 0.75
         
 
     def T2bw_0p25(self):
         # model name
         self.modelname = "T2bw_0p25"
         # decay chain
-        self.label= "pp #rightarrow #tilde{t} #tilde{t},  #tilde{t} #rightarrow bW #tilde{#chi}^{0}_{1}";
+        self.label= "pp #rightarrow #tilde{t} #tilde{t},  #tilde{t} #rightarrow b #tilde{#chi}^{#pm}_{1}";
         # scan range to plot
-        self.Xmin = 100.-25.#/2.
-        self.Xmax = 800.+25.#/2.
+        # self.Xmin = 100.-25.#/2.
+        self.Xmin = 100.
+        # self.Xmax = 800.+25.#/2.
+        self.Xmax = 550.
         self.Ymin = 0.
-        self.Ymax = 800.
+        # self.Ymax = 800.
+        self.Ymax = 450.
         # produce sparticle
         self.sParticle = "m_{ #tilde{t}} (GeV)"
         # LSP
@@ -148,3 +155,4 @@ class sms():
         mW = 0.#80
         self.diagX = array('d',[0,20000])
         self.diagY = array('d',[-mW, 20000-mW])
+        self.xsplitval = 0.25
