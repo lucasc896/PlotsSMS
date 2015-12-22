@@ -181,10 +181,15 @@ def get_legend():
 
 
     # tex3 = r.TLatex(120., 465., "CMS Preliminary, 18.5 fb^{-1}, #sqrt{s } = 8 TeV, #alpha_{T}")
-    tex3 = r.TLatex(120., 465., "CMS, 18.5 fb^{-1}, #sqrt{s } = 8 TeV, #alpha_{T}")
+    tex3 = r.TLatex(460., 460., "18.5 fb^{-1} (8 TeV), #alpha_{T}")
     tex3.SetTextFont(42)
     tex3.SetTextSize(0.045)
     outt.append(tex3)
+
+    tex4 = r.TLatex(100., 460., "CMS")
+    tex4.SetTextFont(42)
+    tex4.SetTextSize(0.045)
+    outt.append(tex4)
 
     return {"graphs":outg, "text":outt}
 
