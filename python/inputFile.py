@@ -1,5 +1,6 @@
 import sys
 import ROOT as rt
+from copy import deepcopy
 
 class inputFile():
 
@@ -8,6 +9,7 @@ class inputFile():
         for histo in self.HISTOGRAM.values() : histo.GetZaxis().SetTitle("")
         self.EXPECTED = self.findEXPECTED(fileName)
         self.OBSERVED = self.findOBSERVED(fileName)
+        self.EXPECTEDTWO = self.findEXPECTEDTWO(fileName)
         self.LUMI = self.findATTRIBUTE(fileName, "LUMI")
         self.ENERGY = self.findATTRIBUTE(fileName, "ENERGY")
         self.PRELIMINARY = self.findATTRIBUTE(fileName, "PRELIMINARY")
@@ -61,18 +63,19 @@ class inputFile():
             return tmpLINE[1]
 
     def findHISTOGRAM(self, fileName):
-        fileIN = open(fileName)        
+        fileIN = open(fileName) 
         for line in fileIN:
             tmpLINE =  line[:-1].split(" ")
             if tmpLINE[0] != "HISTOGRAM": continue
             fileIN.close()
             rootFileIn = rt.TFile.Open(tmpLINE[1])
-            return {'histogram': rootFileIn.Get(tmpLINE[2])}
+            hist = deepcopy(rootFileIn.Get(tmpLINE[2]))
+            return {'histogram': hist}
             #return {'histogram': self.dm(rootFileIn.Get(tmpLINE[2]))}
             #return {'histogram': self.interpolate(self.dm(rootFileIn.Get(tmpLINE[2])))}
             
     def findEXPECTED(self, fileName):
-        fileIN = open(fileName)        
+        fileIN = open(fileName)
         for line in fileIN:
             tmpLINE =  line[:-1].split(" ")
             if tmpLINE[0] != "EXPECTED": continue
@@ -88,8 +91,31 @@ class inputFile():
                     'colorArea2': tmpLINE[9],
                     }
 
+    def findEXPECTEDTWO(self, fileName):
+        fileIN = open(fileName)
+        for line in fileIN:
+            tmpLINE =  line[:-1].split(" ")
+            if tmpLINE[0] != "EXPECTED": continue
+            fileIN.close()
+            rootFileIn = rt.TFile.Open(tmpLINE[1])
+
+            nominal = rootFileIn.Get(tmpLINE[2]+"_two")
+            plus = rootFileIn.Get(tmpLINE[3]+"_two")
+            plus2 = rootFileIn.Get(tmpLINE[4]+"_two")
+            minus = rootFileIn.Get(tmpLINE[5]+"_two")
+            minus2 = rootFileIn.Get(tmpLINE[6]+"_two")
+
+            return {'nominal': nominal if "0x0" not in str(nominal) else None,
+                    'plus': plus if "0x0" not in str(plus) else None,
+                    'minus': minus if "0x0" not in str(minus) else None,
+                    'plus2': plus2 if "0x0" not in str(plus2) else None,
+                    'minus2': minus2 if "0x0" not in str(minus2) else None,
+                    'colorLine': tmpLINE[7],
+                    'colorArea': tmpLINE[8],
+                    'colorArea': tmpLINE[9]}
+
     def findOBSERVED(self, fileName):
-        fileIN = open(fileName)        
+        fileIN = open(fileName)
         for line in fileIN:
             tmpLINE =  line[:-1].split(" ")
             if tmpLINE[0] != "OBSERVED": continue
