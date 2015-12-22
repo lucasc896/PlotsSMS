@@ -10,16 +10,19 @@ class smsPlotABS(object):
     # expLimits is a list of expected limits [NOMINAL, +1SIGMA, -1SIGMA, +2SIGMA, -2SIGMA]
     # Label is a label referring to the analysis (e.g. RA1, RA2, RA2b, etc)
 
-    def __init__(self, modelname, histo, obsLimits, expLimits, energy, lumi, preliminary, label):
-        self.standardDef(modelname, histo, obsLimits, expLimits, energy, lumi, preliminary, label)
+    def __init__(self, modelname, histo, obsLimits, expLimits, expLimitsTwo, energy, lumi, preliminary, label):
+        self.standardDef(modelname, histo, obsLimits, expLimits, expLimitsTwo, energy, lumi, preliminary, label)
         self.c = rt.TCanvas("cABS_%s" %label,"cABS_%s" %label,300,300)
         self.histo = histo
 
-    def standardDef(self, modelname, histo, obsLimits, expLimits, energy, lumi, preliminary, label):
+    def standardDef(self, modelname, histo, obsLimits, expLimits, expLimitsTwo, energy, lumi, preliminary, label):
         # which SMS?
         self.model = sms(modelname)
         self.OBS = obsLimits
         self.EXP = expLimits
+        self.EXPTWO = expLimitsTwo
+        print self.EXP
+        print self.EXPTWO
         self.lumi = lumi
         self.energy = energy
         self.preliminary = preliminary
@@ -227,6 +230,14 @@ class smsPlotABS(object):
         textExp2.Draw()
         self.c.textExp2 = textExp2
 
+        if "T2bw" in self.model.modelname:
+            xval = self.model.xsplitval
+            textXVal = rt.TLatex(80, -55, "m_{#tilde{#chi^{#pm}_{1}}} = %sm_{#tilde{t}} + %sm_{#tilde{#chi^{0}_{1}}}" % (str(xval), str(1-xval)))
+            textXVal.SetTextFont(42)
+            textXVal.SetTextSize(0.035)
+            textXVal.Draw()
+            self.c.textXVal =textXVal
+
         LObsP.Draw("LSAME")
         LObs.Draw("LSAME")
         LObsM.Draw("LSAME")
@@ -262,6 +273,7 @@ class smsPlotABS(object):
         self.c.diagonal = diagonal
         
     def DrawLines(self):
+
         if self.OBS is not None : 
             # observed
             self.OBS['nominal'].SetLineColor(color(self.OBS['colorLine']))
@@ -275,6 +287,7 @@ class smsPlotABS(object):
             self.OBS['minus'].SetLineColor(color(self.OBS['colorLine']))
             self.OBS['minus'].SetLineStyle(1)
             self.OBS['minus'].SetLineWidth(2)
+
         # expected + 1sigma
         self.EXP['plus'].SetLineColor(color(self.EXP['colorLine']))
         self.EXP['plus'].SetLineStyle(2)
@@ -301,11 +314,48 @@ class smsPlotABS(object):
         self.EXP['plus2'].Draw("LSAME")
         self.EXP['minus'].Draw("LSAME")
         self.EXP['minus2'].Draw("LSAME")
+
+
+
+        if self.EXPTWO['plus']:
+            # expected + 1sigma
+            self.EXPTWO['plus'].SetLineColor(color(self.EXPTWO['colorLine']))
+            self.EXPTWO['plus'].SetLineStyle(2)
+            self.EXPTWO['plus'].SetLineWidth(2)                
+        if self.EXPTWO['plus2']:
+            # expected + 2sigma
+            self.EXPTWO['plus2'].SetLineColor(color(self.EXPTWO['colorLine']))
+            self.EXPTWO['plus2'].SetLineStyle(3)
+            self.EXPTWO['plus2'].SetLineWidth(2)                
+        if self.EXPTWO['nominal']:
+            # expected
+            self.EXPTWO['nominal'].SetLineColor(color(self.EXPTWO['colorLine']))
+            self.EXPTWO['nominal'].SetLineStyle(2)
+            self.EXPTWO['nominal'].SetLineWidth(4)        
+        if self.EXPTWO['minus']:
+            # expected - 1sigma
+            self.EXPTWO['minus'].SetLineColor(color(self.EXPTWO['colorLine']))
+            self.EXPTWO['minus'].SetLineStyle(2)
+            self.EXPTWO['minus'].SetLineWidth(2)                        
+        if self.EXPTWO['minus2']:
+            # expected - 2sigma
+            self.EXPTWO['minus2'].SetLineColor(color(self.EXPTWO['colorLine']))
+            self.EXPTWO['minus2'].SetLineStyle(3)
+            self.EXPTWO['minus2'].SetLineWidth(2)
+        # DRAW LINES
+        if self.EXPTWO['nominal']: self.EXPTWO['nominal'].Draw("LSAME")
+        if self.EXPTWO['plus']: self.EXPTWO['plus'].Draw("LSAME")
+        if self.EXPTWO['plus2']: self.EXPTWO['plus2'].Draw("LSAME")
+        if self.EXPTWO['minus']: self.EXPTWO['minus'].Draw("LSAME")
+        if self.EXPTWO['minus2']: self.EXPTWO['minus2'].Draw("LSAME")
+
+
+
         if self.OBS is not None : 
             self.OBS['nominal'].Draw("LSAME")
             self.OBS['plus'].Draw("LSAME")
             self.OBS['minus'].Draw("LSAME")
-        
+
 #        c1 = rt.TCanvas()
 #        print self.EXP
 #        tmp = self.EXP["nominal"]
