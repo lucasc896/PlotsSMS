@@ -187,7 +187,7 @@ def get_legend():
     outt.append(tex3)
 
     tex4 = r.TLatex(100., 460., "CMS")
-    tex4.SetTextFont(42)
+    tex4.SetTextFont(61)
     tex4.SetTextSize(0.045)
     outt.append(tex4)
 
