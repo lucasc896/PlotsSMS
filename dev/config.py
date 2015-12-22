@@ -13,7 +13,8 @@ class config(object):
     def __init__(self) :
         self.model_ = None
         self.dir = None
-        self.prelim_ = "Preliminary"
+        # self.prelim_ = "Preliminary"
+        self.prelim_ = ""
         self.label_ = "#alpha_{T}"
         self.lumi_ = 18.5
         self.xs_ = None
