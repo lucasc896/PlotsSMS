@@ -154,3 +154,7 @@ def stop(mass = None):
                 return new
             except KeyError:
                 var += 1
+            if var > 20:
+                print mass
+                print "Dodgy XS."
+                return None
