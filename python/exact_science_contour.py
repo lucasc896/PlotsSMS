@@ -14,24 +14,24 @@ def to_add(model = "", limit = ""):
             "ExpectedUpperLimit_p2_Sigma": [],
             },
         "T2bw_0p25": {
-            "UpperLimit": [],
-            "UpperLimit_m1_Sigma": [],
-            "UpperLimit_p1_Sigma": [],
-            "ExpectedUpperLimit": [],
-            "ExpectedUpperLimit_m1_Sigma": [],
-            "ExpectedUpperLimit_m2_Sigma": [],
-            "ExpectedUpperLimit_p1_Sigma": [],
-            "ExpectedUpperLimit_p2_Sigma": [],
+            "UpperLimit": [(100.,10.)],
+            "UpperLimit_m1_Sigma": [(100.,10.)],
+            "UpperLimit_p1_Sigma": [(100.,10.)],
+            "ExpectedUpperLimit": [(100.,10.)],
+            "ExpectedUpperLimit_m1_Sigma": [(100.,10.)],
+            "ExpectedUpperLimit_m2_Sigma": [(100.,10.)],
+            "ExpectedUpperLimit_p1_Sigma": [(100.,10.)],
+            "ExpectedUpperLimit_p2_Sigma": [(100.,10.)],
             },
         "T2bw_0p75": {
-            "UpperLimit": [],
-            "UpperLimit_m1_Sigma": [],
-            "UpperLimit_p1_Sigma": [],
-            "ExpectedUpperLimit": [],
-            "ExpectedUpperLimit_m1_Sigma": [],
-            "ExpectedUpperLimit_m2_Sigma": [],
-            "ExpectedUpperLimit_p1_Sigma": [],
-            "ExpectedUpperLimit_p2_Sigma": [],
+            "UpperLimit": [(100.,10.)],
+            "UpperLimit_m1_Sigma": [(100.,10.)],
+            "UpperLimit_p1_Sigma": [(100.,10.)],
+            "ExpectedUpperLimit": [(100.,10.)],
+            "ExpectedUpperLimit_m1_Sigma": [(100.,10.)],
+            "ExpectedUpperLimit_m2_Sigma": [(100.,10.)],
+            "ExpectedUpperLimit_p1_Sigma": [(100.,10.)],
+            "ExpectedUpperLimit_p2_Sigma": [(100.,10.)],
             },
     }
     try:
@@ -53,24 +53,24 @@ def to_remove(model = "", limit = ""):
             "UpperLimit_p1_Sigma": [],
             },
         "T2bw_0p25": {
-            "UpperLimit": [],
-            "UpperLimit_m1_Sigma": [],
-            "UpperLimit_p1_Sigma": [],
-            "ExpectedUpperLimit": [],
-            "ExpectedUpperLimit_m1_Sigma": [],
-            "ExpectedUpperLimit_m2_Sigma": [],
-            "ExpectedUpperLimit_p1_Sigma": [],
-            "ExpectedUpperLimit_p2_Sigma": [],
+            "UpperLimit": [(125.,35.),(140.,50.),(100.,25.)],
+            "UpperLimit_m1_Sigma": [(125.,35.),(140.,50.),(100.,25.)],
+            "UpperLimit_p1_Sigma": [(125.,35.),(140.,50.),(100.,25.)],
+            "ExpectedUpperLimit": [(125.,35.),(140.,50.),(100.,25.)],
+            "ExpectedUpperLimit_m1_Sigma": [(125.,35.),(140.,50.),(100.,25.)],
+            "ExpectedUpperLimit_m2_Sigma": [(125.,35.),(140.,50.),(100.,25.)],
+            "ExpectedUpperLimit_p1_Sigma": [(125.,35.),(140.,50.),(100.,25.)],
+            "ExpectedUpperLimit_p2_Sigma": [(125.,35.),(140.,50.),(100.,25.)],
             },
         "T2bw_0p75": {
-            "UpperLimit": [],
-            "UpperLimit_m1_Sigma": [],
-            "UpperLimit_p1_Sigma": [],
-            "ExpectedUpperLimit": [],
-            "ExpectedUpperLimit_m1_Sigma": [],
-            "ExpectedUpperLimit_m2_Sigma": [],
-            "ExpectedUpperLimit_p1_Sigma": [],
-            "ExpectedUpperLimit_p2_Sigma": [],
+            "UpperLimit": [(125.,35.),(140.,50.),(100.,25.)],
+            "UpperLimit_m1_Sigma": [(125.,35.),(140.,50.),(100.,25.)],
+            "UpperLimit_p1_Sigma": [(125.,35.),(140.,50.),(100.,25.)],
+            "ExpectedUpperLimit": [(125.,35.),(140.,50.),(100.,25.)],
+            "ExpectedUpperLimit_m1_Sigma": [(125.,35.),(140.,50.),(100.,25.)],
+            "ExpectedUpperLimit_m2_Sigma": [(125.,35.),(140.,50.),(100.,25.)],
+            "ExpectedUpperLimit_p1_Sigma": [(125.,35.),(140.,50.),(100.,25.)],
+            "ExpectedUpperLimit_p2_Sigma": [(125.,35.),(140.,50.),(100.,25.)],
             },
     }
     try:
@@ -173,6 +173,14 @@ def do_exact_science(model = ""):
     #     curves[name] = k.ReadObj()
 
     curves['UpperLimit'] = f.Get("UpperLimit")
+    curves['UpperLimit_p1_Sigma'] = f.Get("UpperLimit_p1_Sigma")
+    curves['UpperLimit_m1_Sigma'] = f.Get("UpperLimit_m1_Sigma")
+
+    curves['ExpectedUpperLimit'] = f.Get("ExpectedUpperLimit")
+    curves['ExpectedUpperLimit_p1_Sigma'] = f.Get("ExpectedUpperLimit_p1_Sigma")
+    curves['ExpectedUpperLimit_m1_Sigma'] = f.Get("ExpectedUpperLimit_m1_Sigma")
+    curves['ExpectedUpperLimit_p2_Sigma'] = f.Get("ExpectedUpperLimit_p2_Sigma")
+    curves['ExpectedUpperLimit_m2_Sigma'] = f.Get("ExpectedUpperLimit_m2_Sigma")
 
     if [False, True][0]:
         print "WARNING: Trimming T2tt maps!"
@@ -188,7 +196,8 @@ def do_exact_science(model = ""):
 
     # get values
     for c in curves:
-        if c != "UpperLimit": continue
+        # if c != "UpperLimit": continue
+        print c
         print curves[c].GetN()
         data[c] = extract_data(curves[c])
 
@@ -232,7 +241,7 @@ def do_exact_science(model = ""):
 
 def main():
 
-    for model in ["T2tt", "T2bw_0p75", "T2bw_0p25"][:1]:
+    for model in ["T2tt", "T2bw_0p75", "T2bw_0p25"][2:]:
         do_exact_science(model)
 
 if __name__ == "__main__":
