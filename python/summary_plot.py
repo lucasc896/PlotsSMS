@@ -11,7 +11,7 @@ def sqProc(q="", daughter=""):
     if daughter == 'b':
         chi = "#tilde{#chi}^{#pm}_{1}"
     out = "pp #rightarrow #tilde{%s} #tilde{%s}" % (q, q)
-    out += ", #tilde{%s} #rightarrow %s %s" % (q, daughter, chi)
+    out  = "#tilde{%s} #rightarrow %s %s" % (q, daughter, chi)
     # out += "; m(#tilde{g})>>m(#tilde{%s})" % q
     return out
 
@@ -55,11 +55,11 @@ class contourGroup(object):
 
 def empty():
 
-    hist = r.TH2D("emptyHisto", "", 1, 100., 800., 1, 0., 450. )
+    hist = r.TH2D("emptyHisto", "", 1, 100., 750., 1, 0., 450. )
     hist.GetXaxis().SetTitle("m_{#tilde{t}} (GeV)")
     hist.SetTitleOffset(1.3, "x")
     hist.GetYaxis().SetTitle("m_{LSP} (GeV)")
-    hist.SetTitleOffset(1.3, "y")
+    hist.SetTitleOffset(1.4, "y")
 
     return hist
 
@@ -68,9 +68,13 @@ def get_model_contours(model = "", cont_names = ["ExpectedUpperLimit", "Expected
     if model in ["T2cc", "T2_4body"]:
         infile = "config/SUS14006/chris/%s/%s_obs.root" % (model, model)
         suf = ""
+    elif model == "T2tt":
+        infile = "config/SUS14006/latest_chris_contours/T2tt/T2tt_newContCurves_newSysts_v2.root"
+        suf = ""
     else:
-        infile = "config/SUS14006/latest_chris/%s/%s_obs.root" % (model, model)
+        infile = "config/SUS14006/latest_chris_contours/%s/%s_newContCurves.root" % (model, model)
         suf = "_new"
+    print infile
     f = r.TFile.Open(infile)
 
     contours = {}
@@ -78,7 +82,12 @@ def get_model_contours(model = "", cont_names = ["ExpectedUpperLimit", "Expected
 
 
     for c in cont_names:
-        contours[c] = f.Get(c+suf)
+        getter = c + suf
+        if model == "T2tt" and "Expected" in c:
+            getter += "_two"
+        contours[c] = f.Get(getter) 
+
+    print model, contours
 
     return contours
 
@@ -93,8 +102,8 @@ def get_legend():
     LObsP.SetLineColor(r.kBlack)
     LObsP.SetLineStyle(1)
     LObsP.SetLineWidth(3)
-    LObsP.SetPoint(0, 355., 400.)
-    LObsP.SetPoint(1,405., 400.)
+    LObsP.SetPoint(0, 305., 420.)
+    LObsP.SetPoint(1,355., 420.)
 
     outg.append(LObsP)
 
@@ -104,25 +113,30 @@ def get_legend():
     LExpP.SetLineColor(r.kBlack)
     LExpP.SetLineStyle(2)
     LExpP.SetLineWidth(3)
-    LExpP.SetPoint(0, 355., 360.)
-    LExpP.SetPoint(1,405., 360.)
+    LExpP.SetPoint(0, 305., 390.)
+    LExpP.SetPoint(1,355., 390.)
 
     outg.append(LExpP)
 
-    textObs = r.TLatex(415., 392., "Observed")
+    textObs = r.TLatex(160., 415., "Observed")
     textObs.SetTextFont(42)
-    textObs.SetTextSize(0.025)
+    textObs.SetTextSize(0.04)
 
     outt.append(textObs)
 
-    textExp = r.TLatex(415., 356., "Expected")
+    textExp = r.TLatex(160., 385., "Expected")
     textExp.SetTextFont(42)
-    textExp.SetTextSize(0.025)
+    textExp.SetTextSize(0.04)
 
     outt.append(textExp) 
 
-    modx = 510.
-    mody = 420.
+    modx = 520.
+    mody = 390.
+
+    texpp = r.TLatex(modx+55., mody+30., "pp #rightarrow #tilde{t} #tilde{t},")
+    texpp.SetTextFont(42)
+    texpp.SetTextSize(0.035)
+    outt.append(texpp)
 
     for model in models():
         graph = r.TGraph(2)
@@ -138,36 +152,45 @@ def get_legend():
 
         textT2tt = r.TLatex(modx+60., mody-6., process_stamp(model))
         textT2tt.SetTextFont(42)
-        textT2tt.SetTextSize(0.025)
+        textT2tt.SetTextSize(0.03)
         outt.append(textT2tt)
 
         mody -= 40.
 
-    tex1 = r.TLatex(135., 410., "CMS Preliminary")
-    tex1.SetTextFont(42)
-    tex1.SetTextSize(0.03)
-    outt.append(tex1)
 
-    tex2 = r.TLatex(135., 375., "#sqrt{s } = 8 TeV")
-    tex2.SetTextFont(42)
-    tex2.SetTextSize(0.03)
-    outt.append(tex2)
 
-    texL = r.TLatex(135., 340., "#int L dt = 18.493 fb^{-1}")
-    texL.SetTextFont(42)
-    texL.SetTextSize(0.03)
-    outt.append(texL)
+    # tex1 = r.TLatex(135., 410., "CMS Preliminary")
+    # tex1.SetTextFont(42)
+    # tex1.SetTextSize(0.03)
+    # outt.append(tex1)
 
-    tex3 = r.TLatex(135., 305., "#alpha_{T} Parked")
+    # tex2 = r.TLatex(135., 375., "#sqrt{s } = 8 TeV")
+    # tex2.SetTextFont(42)
+    # tex2.SetTextSize(0.03)
+    # outt.append(tex2)
+
+    # texL = r.TLatex(135., 340., "#int L dt = 18.5 fb^{-1}")
+    # texL.SetTextFont(42)
+    # texL.SetTextSize(0.03)
+    # outt.append(texL)
+
+    # tex3 = r.TLatex(135., 305., "#alpha_{T} Parked")
+    # tex3.SetTextFont(42)
+    # tex3.SetTextSize(0.03)
+    # outt.append(tex3)
+
+
+    # tex3 = r.TLatex(120., 465., "CMS Preliminary, 18.5 fb^{-1}, #sqrt{s } = 8 TeV, #alpha_{T}")
+    tex3 = r.TLatex(120., 465., "CMS, 18.5 fb^{-1}, #sqrt{s } = 8 TeV, #alpha_{T}")
     tex3.SetTextFont(42)
-    tex3.SetTextSize(0.03)
+    tex3.SetTextSize(0.045)
     outt.append(tex3)
 
     return {"graphs":outg, "text":outt}
 
 def get_text():
 
-    text1 = r.TLatex(150., 510., "CMS Preliminary, #sqrt{s} = 8TeV,  #alpha_{T} Parked")
+    text1 = r.TLatex(150., 510., "CMS Preliminary, #sqrt{s} = 8TeV,  #alpha_{T}")
     text1.SetTextFont(42)
     text1.SetTextSize(0.04)
 
@@ -185,6 +208,7 @@ def main():
         model_contours[mod] = get_model_contours(mod, ["ExpectedUpperLimit", "UpperLimit"])
 
     canv = r.TCanvas("canv", "canv", 600, 600)
+    r.gPad.SetLeftMargin(2.)
     # lg = r.TLegend(0.6, 0.6, 0.89, 0.89)
     emptyHisto = empty()
     emptyHisto.Draw("")
@@ -192,6 +216,21 @@ def main():
     for model in mods:
         for cont_name in model_contours[model]:
             this_contour = model_contours[model][cont_name]
+            
+            if model == "T2tt":
+                remove = []
+                doremove = False
+                for i in range(this_contour.GetN()+1):
+                    x = r.Double(0.)
+                    y = r.Double(0.)
+                    this_contour.GetPoint(i, x, y)
+                    if doremove: remove.append(i)
+                    if x == 200.:
+                        doremove = True
+                    
+                for i in reversed(remove):
+                    this_contour.RemovePoint(i)
+
             this_contour.Draw("lsame")
             
             this_contour.SetLineColor(model_cols(model))
