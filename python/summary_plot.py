@@ -255,7 +255,7 @@ def main():
             for t in leg[l]:
                 t.Draw()
 
-    canv.Print("tmp.pdf")
+    canv.Print("summary.pdf")
 
 if __name__ == "__main__":
     main()
